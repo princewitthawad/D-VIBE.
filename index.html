@@ -175,6 +175,24 @@
     padding:8px 0; border-bottom:1px dashed var(--line); font-size:12.5px; color:var(--muted);
   }
   .pre-show-row .time{color:var(--red); font-family:'Oswald'; font-size:12.5px; flex-shrink:0;}
+  .ai-fill-box{
+    background:var(--surface-2); border:1px solid var(--red-dim); border-radius:12px;
+    padding:12px;
+  }
+  .ai-fill-box textarea{
+    width:100%; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    color:var(--text); padding:10px; font-family:'Work Sans'; font-size:13px; resize:vertical;
+  }
+  .ai-review-row{
+    background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+    padding:10px; margin-bottom:8px;
+  }
+  .ai-review-row .top{display:flex; align-items:center; gap:8px; margin-bottom:8px;}
+  .ai-review-row input[type="text"], .ai-review-row input[type="number"], .ai-review-row select{
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    color:var(--text); padding:6px 8px; font-size:12.5px; font-family:'Work Sans';
+  }
+  .ai-review-row .grid{display:grid; grid-template-columns:1fr 1fr; gap:6px;}
   .day-card{margin-bottom:12px;}
   .day-card .day-label{
     font-family:'Oswald'; font-size:15px; letter-spacing:0.05em; text-transform:uppercase;
@@ -323,6 +341,14 @@
           <button class="toggle-link" onclick="toggleMenuForm()">+ จัดการเมนู</button>
         </div>
         <div id="menu-form" style="display:none; margin-top:10px;">
+          <div class="ai-fill-box">
+            <div style="font-family:'Oswald'; font-size:13px; letter-spacing:0.03em; color:var(--red); margin-bottom:6px;">🤖 ให้ AI กรอกข้อมูลให้</div>
+            <p class="hint" style="margin:0 0 8px;">วางข้อความราคา/รายการสินค้าที่ได้มา (คัดลอกจากไหนก็ได้) แล้วให้ AI แกะเป็นรายการเมนูให้อัตโนมัติ — ก่อนบันทึกจะให้ตรวจสอบและแก้ไขได้ก่อนเสมอ</p>
+            <textarea id="ai-fill-input" rows="5" placeholder="วางข้อความตรงนี้ เช่น ชื่อสินค้า ราคา หน่วยนับ ฯลฯ"></textarea>
+            <button class="btn block" style="margin-top:8px; background:linear-gradient(90deg, var(--red), var(--purple));" onclick="aiParseMenuText()" id="ai-fill-btn">✨ ให้ AI แกะข้อมูล</button>
+            <p id="ai-fill-status" class="hint" style="display:none;"></p>
+          </div>
+          <div style="height:1px; background:var(--line); margin:16px 0;"></div>
           <label class="field" style="margin-top:0;">ชื่อสินค้า</label>
           <input id="m-name" placeholder="เช่น เบียร์สด / วิสกี้">
           <label class="field">ยี่ห้อ</label>
@@ -394,6 +420,18 @@
     <h3 id="picker-title">เลือกทีมงาน</h3>
     <div id="picker-list"></div>
     <button class="btn block" style="margin-top:12px;" onclick="closePicker()">เสร็จสิ้น</button>
+  </div>
+</div>
+
+<!-- AI menu-extraction review overlay -->
+<div class="overlay" id="ai-review-overlay">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h3>ตรวจสอบก่อนเพิ่มเข้าเมนู</h3>
+    <p class="hint" style="margin:0 0 10px;">AI แกะข้อมูลได้ตามนี้ ติ๊กออกรายการที่ไม่ต้องการ หรือแก้ไขราคา/ประเภทก่อนกดยืนยัน</p>
+    <div id="ai-review-list"></div>
+    <button class="btn block" style="margin-top:12px;" onclick="confirmAiFillItems()">✓ เพิ่มรายการที่เลือกเข้าเมนู</button>
+    <button class="btn secondary block" style="margin-top:8px;" onclick="closeAiReview()">ยกเลิก</button>
   </div>
 </div>
 
@@ -1226,6 +1264,151 @@ function toggleMenuForm(){
   f.style.display = (f.style.display === 'none') ? 'block' : 'none';
 }
 
+/* ---------- AI-assisted paste-and-fill for menu items ---------- */
+let aiFillCandidates = [];
+
+async function aiParseMenuText(){
+  const input = document.getElementById('ai-fill-input').value.trim();
+  const statusEl = document.getElementById('ai-fill-status');
+  const btn = document.getElementById('ai-fill-btn');
+  if(!input){
+    statusEl.style.display = 'block';
+    statusEl.style.color = 'var(--red)';
+    statusEl.textContent = 'วางข้อความก่อนนะครับ';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ กำลังแกะข้อมูล...';
+  statusEl.style.display = 'block';
+  statusEl.style.color = 'var(--muted)';
+  statusEl.textContent = '';
+
+  const systemPrompt = `You are a data-extraction assistant for a Thai bar's drink/liquor menu app.
+Extract EVERY distinct product mentioned in the user's pasted text into a JSON array.
+Each item must be an object with exactly these fields:
+- name: string, product name as given (Thai or English, keep as-is)
+- brand: string, brand name if distinguishable from the product name, else ""
+- cat: one of "liquor" | "beer" | "mixer" (mixer = soft drinks, water, soda, juice, energy drinks, mixers)
+- supplier: your best guess of one of "singha" | "coke" | "liquor" based on brand context
+  (Coca-Cola/Fanta/Sprite/Schweppes/Monster/A&W/Minute Maid/น้ำทิพย์ => "coke";
+   Singha/Leo/Thai beer/soda/water brands => "singha"; spirits/liquor/whisky/vodka/soju => "liquor")
+- unit: the pack/case unit as given (e.g. ลัง, ถาด, แพ็ก, ขวด) — if not stated, use "ลัง"
+- price: number only, no currency symbols or commas. Use the stated per-unit price.
+  If a tiered price ladder is given, use the price at the SMALLEST quantity tier as the base price.
+- bulkQty: number, 0 unless a clear bulk-discount quantity threshold is stated
+- bulkPrice: number, 0 unless a clear bulk-discount price is stated
+- note: string, any extra useful detail (e.g. pack contents like "24 กระป๋อง/ถาด"), else ""
+
+Rules:
+- Only extract facts actually present in the text. Never invent prices or products that aren't there.
+- If the text contains no relevant product/price data, return an empty array.
+- Return ONLY a raw JSON array. No markdown code fences, no explanation, no extra text before or after.`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 4000,
+        system: systemPrompt,
+        messages: [{role: "user", content: input}]
+      })
+    });
+    const data = await response.json();
+    const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+    const cleaned = textBlocks.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(cleaned);
+
+    if(!Array.isArray(parsed) || parsed.length === 0){
+      statusEl.style.color = 'var(--red)';
+      statusEl.textContent = 'AI ไม่พบข้อมูลสินค้าในข้อความนี้ ลองวางข้อความอื่นดูครับ';
+      btn.disabled = false;
+      btn.textContent = '✨ ให้ AI แกะข้อมูล';
+      return;
+    }
+
+    aiFillCandidates = parsed.map(item => ({
+      name: item.name || '',
+      brand: item.brand || '',
+      cat: ['liquor','beer','mixer'].includes(item.cat) ? item.cat : 'mixer',
+      supplier: ['singha','coke','liquor'].includes(item.supplier) ? item.supplier : 'singha',
+      unit: item.unit || 'ลัง',
+      price: Number(item.price) || 0,
+      bulkQty: Number(item.bulkQty) || 0,
+      bulkPrice: Number(item.bulkPrice) || 0,
+      note: item.note || '',
+      include: true
+    }));
+
+    statusEl.textContent = '';
+    statusEl.style.display = 'none';
+    btn.disabled = false;
+    btn.textContent = '✨ ให้ AI แกะข้อมูล';
+    openAiReview();
+  }catch(e){
+    statusEl.style.color = 'var(--red)';
+    statusEl.textContent = 'เกิดข้อผิดพลาดตอนแกะข้อมูล เช็คอินเทอร์เน็ตแล้วลองใหม่อีกครั้ง';
+    btn.disabled = false;
+    btn.textContent = '✨ ให้ AI แกะข้อมูล';
+  }
+}
+
+function openAiReview(){
+  renderAiReviewList();
+  document.getElementById('ai-review-overlay').classList.add('show');
+}
+
+function closeAiReview(){
+  document.getElementById('ai-review-overlay').classList.remove('show');
+}
+
+function renderAiReviewList(){
+  const el = document.getElementById('ai-review-list');
+  el.innerHTML = aiFillCandidates.map((item, i) => `
+    <div class="ai-review-row">
+      <div class="top">
+        <input type="checkbox" ${item.include ? 'checked' : ''} onchange="aiFillCandidates[${i}].include=this.checked">
+        <input type="text" value="${escapeHtml(item.name)}" style="flex:1;" onchange="aiFillCandidates[${i}].name=this.value">
+      </div>
+      <div class="grid">
+        <input type="text" value="${escapeHtml(item.brand)}" placeholder="ยี่ห้อ" onchange="aiFillCandidates[${i}].brand=this.value">
+        <input type="text" value="${escapeHtml(item.unit)}" placeholder="หน่วย" onchange="aiFillCandidates[${i}].unit=this.value">
+        <select onchange="aiFillCandidates[${i}].cat=this.value">
+          <option value="beer" ${item.cat==='beer'?'selected':''}>เบียร์</option>
+          <option value="liquor" ${item.cat==='liquor'?'selected':''}>เหล้า</option>
+          <option value="mixer" ${item.cat==='mixer'?'selected':''}>น้ำ/โซดา/มิกเซอร์</option>
+        </select>
+        <select onchange="aiFillCandidates[${i}].supplier=this.value">
+          <option value="singha" ${item.supplier==='singha'?'selected':''}>สิงห์</option>
+          <option value="coke" ${item.supplier==='coke'?'selected':''}>โค้ก</option>
+          <option value="liquor" ${item.supplier==='liquor'?'selected':''}>เหล้า</option>
+        </select>
+        <input type="number" value="${item.price}" placeholder="ราคา" onchange="aiFillCandidates[${i}].price=Number(this.value)||0">
+      </div>
+    </div>
+  `).join('');
+}
+
+async function confirmAiFillItems(){
+  const toAdd = aiFillCandidates.filter(item => item.include && item.name.trim());
+  toAdd.forEach(item => {
+    state.menu.push({
+      id: uid(), name: item.name.trim(), brand: item.brand.trim(), cat: item.cat,
+      supplier: item.supplier, unit: item.unit.trim() || 'ลัง', price: item.price,
+      bulkQty: item.bulkQty, bulkPrice: item.bulkPrice, note: item.note
+    });
+  });
+  await saveState();
+  renderMenuManageList();
+  renderOrder();
+  aiFillCandidates = [];
+  document.getElementById('ai-fill-input').value = '';
+  closeAiReview();
+}
+
+
 function addMenuItem(){
   const name = document.getElementById('m-name').value.trim();
   if(!name) return;
@@ -1431,7 +1614,7 @@ function buildOrderSlipDom(orderEntries){
       <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; color:#FFFFFF;">ยอดรวมทั้งหมด</span>
       <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; color:#E8B94A;"><span style="margin-right:2px;">฿</span>${grandTotal.toLocaleString()}</span>
     </div>
-    <div style="text-align:center; font-size:10px; color:rgba(255,255,255,0.4); margin-top:18px;">D-VIBE • ใบสั่งซื้อที่สร้างจากแอป (v20)</div>
+    <div style="text-align:center; font-size:10px; color:rgba(255,255,255,0.4); margin-top:18px;">D-VIBE • ใบสั่งซื้อที่สร้างจากแอป (v21)</div>
   `;
   document.body.appendChild(wrap);
   return wrap;
