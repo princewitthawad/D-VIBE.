@@ -193,6 +193,26 @@
     color:var(--text); padding:6px 8px; font-size:12.5px; font-family:'Work Sans';
   }
   .ai-review-row .grid{display:grid; grid-template-columns:1fr 1fr; gap:6px;}
+  .mic-btn{
+    width:44px; height:44px; border-radius:50%; border:none; flex-shrink:0;
+    background:var(--surface-2); border:1px solid var(--line); font-size:18px; cursor:pointer;
+  }
+  .mic-btn.recording{
+    background:linear-gradient(90deg, var(--red), var(--purple));
+    animation:micPulse 1.2s infinite;
+  }
+  @keyframes micPulse{
+    0%{box-shadow:0 0 0 0 rgba(196,18,48,0.55);}
+    70%{box-shadow:0 0 0 12px rgba(196,18,48,0);}
+    100%{box-shadow:0 0 0 0 rgba(196,18,48,0);}
+  }
+  .assistant-reply-card{border-color:var(--red-dim); font-size:14px; line-height:1.6;}
+  .assistant-hist-item{
+    padding:8px 0; border-bottom:1px solid var(--line); font-size:12.5px;
+  }
+  .assistant-hist-item:last-child{border-bottom:none;}
+  .assistant-hist-item .q{color:var(--text); font-weight:600;}
+  .assistant-hist-item .a{color:var(--muted); margin-top:3px;}
   .day-card{margin-bottom:12px;}
   .day-card .day-label{
     font-family:'Oswald'; font-size:15px; letter-spacing:0.05em; text-transform:uppercase;
@@ -399,6 +419,46 @@
       <button class="btn secondary block" onclick="resetOrder()">รีเซ็ตออเดอร์</button>
       <div style="height:70px;"></div>
     </section>
+
+    <!-- TAB 4: AI SEARCH / VOICE ASSISTANT -->
+    <section class="tabpanel" id="tab-search">
+      <h2 class="section" style="margin-top:0">🔍 ค้นหา / สั่งงานด้วยเสียง</h2>
+      <div class="card">
+        <p class="hint" style="margin:0 0 10px;">พิมพ์หรือพูดด้วยภาษาธรรมชาติได้เลย เช่น "วงฮานามิเล่นวันไหน", "เพิ่มคะแนนวงยับเยินเป็น 8", "เหล้าโซจูเหลือกี่ลัง" — ค้นหาแบบใกล้เคียงได้แม้พิมพ์/พูดไม่ตรงเป๊ะ</p>
+        <div style="display:flex; gap:8px; align-items:flex-end;">
+          <div style="flex:1;">
+            <input id="assistant-input" type="text" placeholder="พิมพ์คำถามหรือคำสั่ง..." onkeydown="if(event.key==='Enter') submitAssistantQuery();">
+          </div>
+          <button id="assistant-mic-btn" class="mic-btn" onclick="toggleVoiceInput()" title="พูดด้วยเสียง">🎙️</button>
+        </div>
+        <button class="btn block" style="margin-top:10px;" onclick="submitAssistantQuery()" id="assistant-send-btn">ส่ง</button>
+        <p id="assistant-listening" class="hint" style="display:none; color:var(--red);">🎙️ กำลังฟัง... พูดได้เลย</p>
+      </div>
+
+      <div id="assistant-response-wrap" style="display:none;">
+        <h2 class="section">คำตอบ</h2>
+        <div class="card assistant-reply-card">
+          <div id="assistant-reply-text"></div>
+          <button class="toggle-link" style="margin-top:8px;" onclick="speakLastReply()">🔊 อ่านออกเสียงอีกครั้ง</button>
+        </div>
+      </div>
+
+      <div id="assistant-confirm-wrap" style="display:none;">
+        <h2 class="section">ยืนยันการแก้ไข</h2>
+        <div class="card">
+          <p class="hint" style="margin:0 0 10px;">AI จะแก้ไขข้อมูลตามนี้ ยืนยันก่อนบันทึกจริง:</p>
+          <div id="assistant-confirm-list"></div>
+          <button class="btn block" style="margin-top:12px;" onclick="applyAssistantUpdates()">✓ ยืนยันแก้ไข</button>
+          <button class="btn secondary block" style="margin-top:8px;" onclick="cancelAssistantUpdates()">ยกเลิก</button>
+        </div>
+      </div>
+
+      <div id="assistant-history-wrap">
+        <h2 class="section">ประวัติล่าสุด</h2>
+        <div id="assistant-history" class="card"></div>
+      </div>
+      <div style="height:70px;"></div>
+    </section>
   </main>
 
   <div class="totalbar" id="totalbar" style="display:none;">
@@ -410,6 +470,7 @@
     <button class="active" data-tab="tab-artists" onclick="switchTab('tab-artists', this)"><span class="ic">🎤</span>ทีมงาน</button>
     <button data-tab="tab-schedule" onclick="switchTab('tab-schedule', this)"><span class="ic">📅</span>ตารางคิว</button>
     <button data-tab="tab-drinks" onclick="switchTab('tab-drinks', this)"><span class="ic">🍺</span>เครื่องดื่ม</button>
+    <button data-tab="tab-search" onclick="switchTab('tab-search', this)"><span class="ic">🔍</span>ค้นหา</button>
   </nav>
 </div>
 
@@ -1057,6 +1118,284 @@ async function saveState(){
 
 function uid(){ return Math.random().toString(36).slice(2,10); }
 
+/* ---------- AI search / voice assistant ---------- */
+let assistantRecognition = null;
+let assistantIsRecording = false;
+let assistantLastReply = '';
+let assistantPendingUpdates = [];
+let assistantHistory = [];
+
+function normalizeForMatch(s){
+  return String(s || '').toLowerCase().replace(/\s+/g, '').trim();
+}
+
+// Simple Levenshtein-based similarity score 0..1 (1 = identical), plus a boost
+// for substring containment, so "ใกล้เคียง" (near) matches work well for both
+// typos and partial names spoken by voice.
+function similarity(a, b){
+  a = normalizeForMatch(a); b = normalizeForMatch(b);
+  if(!a || !b) return 0;
+  if(a === b) return 1;
+  if(a.includes(b) || b.includes(a)) return 0.85;
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+  for(let i=0; i<=m; i++) dp[i][0] = i;
+  for(let j=0; j<=n; j++) dp[0][j] = j;
+  for(let i=1; i<=m; i++){
+    for(let j=1; j<=n; j++){
+      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    }
+  }
+  const dist = dp[m][n];
+  return 1 - dist / Math.max(m, n);
+}
+
+function findBestArtistMatch(nameQuery){
+  let best = null, bestScore = 0;
+  state.artists.forEach(a => {
+    const s = similarity(a.name, nameQuery);
+    if(s > bestScore){ bestScore = s; best = a; }
+  });
+  return bestScore >= 0.4 ? best : null;
+}
+
+function findBestMenuMatch(nameQuery){
+  let best = null, bestScore = 0;
+  state.menu.forEach(m => {
+    const s = Math.max(similarity(m.name, nameQuery), similarity(m.name + ' ' + m.brand, nameQuery));
+    if(s > bestScore){ bestScore = s; best = m; }
+  });
+  return bestScore >= 0.4 ? best : null;
+}
+
+function setupVoiceRecognition(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR) return null;
+  const rec = new SR();
+  rec.lang = 'th-TH';
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  rec.onresult = (e) => {
+    const transcript = e.results[0][0].transcript;
+    document.getElementById('assistant-input').value = transcript;
+    submitAssistantQuery();
+  };
+  rec.onend = () => {
+    assistantIsRecording = false;
+    document.getElementById('assistant-mic-btn').classList.remove('recording');
+    document.getElementById('assistant-listening').style.display = 'none';
+  };
+  rec.onerror = () => {
+    assistantIsRecording = false;
+    document.getElementById('assistant-mic-btn').classList.remove('recording');
+    document.getElementById('assistant-listening').style.display = 'none';
+  };
+  return rec;
+}
+
+function toggleVoiceInput(){
+  if(!assistantRecognition){
+    assistantRecognition = setupVoiceRecognition();
+    if(!assistantRecognition){
+      alert('เบราว์เซอร์นี้ไม่รองรับการพูดสั่งงาน กรุณาพิมพ์แทนได้ครับ');
+      return;
+    }
+  }
+  if(assistantIsRecording){
+    assistantRecognition.stop();
+    return;
+  }
+  assistantIsRecording = true;
+  document.getElementById('assistant-mic-btn').classList.add('recording');
+  document.getElementById('assistant-listening').style.display = 'block';
+  try{ assistantRecognition.start(); }catch(e){ /* already started */ }
+}
+
+function speakText(text){
+  if(!window.speechSynthesis || !text) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'th-TH';
+  utter.rate = 1.0;
+  window.speechSynthesis.speak(utter);
+}
+
+function speakLastReply(){
+  speakText(assistantLastReply);
+}
+
+function buildAppContextSummary(){
+  const artists = state.artists.map(a => ({
+    name: a.name, type: a.type, score: a.score, status: a.status,
+    auditionDate: a.auditionDate, auditionTime: a.auditionTime, note: a.note
+  }));
+  const scheduleByDay = {};
+  DAYS.forEach(d => {
+    scheduleByDay[d.label] = {};
+    BREAKS.forEach(b => {
+      const names = state.schedule[d.key][b.key].map(id => {
+        const a = artistById(id);
+        return a ? a.name : null;
+      }).filter(Boolean);
+      if(names.length) scheduleByDay[d.label][b.label] = names;
+    });
+  });
+  const menu = state.menu.map(m => ({
+    name: m.name, brand: m.brand, cat: m.cat, supplier: m.supplier,
+    unit: m.unit, price: m.price, orderedQty: state.order[m.id] || 0
+  }));
+  return {artists, scheduleByDay, menu};
+}
+
+async function submitAssistantQuery(){
+  const input = document.getElementById('assistant-input');
+  const query = input.value.trim();
+  if(!query) return;
+
+  const sendBtn = document.getElementById('assistant-send-btn');
+  sendBtn.disabled = true;
+  sendBtn.textContent = '⏳ กำลังคิด...';
+
+  const context = buildAppContextSummary();
+  const systemPrompt = `You are the voice/text assistant inside "D-VIBE", a Thai live-music venue's management app.
+You can see the current data below (artists/auditions, weekly schedule, drink menu with order quantities).
+The user will ask questions in Thai (typed or transcribed from speech) — answer using FUZZY/NEAR matching on
+names (they may mishear, mistype, or say partial names). You can also propose edits when asked to change
+something (e.g. change a score, change audition status, change a drink's order quantity, change a drink's price,
+add a note).
+
+Current data (JSON):
+${JSON.stringify(context)}
+
+Respond ONLY with raw JSON (no markdown fences, no extra text) in this exact shape:
+{
+  "reply": "a short, natural, spoken-friendly Thai sentence answering the question or describing the proposed change",
+  "updates": [
+    // zero or more of these, ONLY when the user clearly asked to change something:
+    {"type":"artist_score", "name":"<best-matching artist name from the data above>", "value": <number 0-10>},
+    {"type":"artist_status", "name":"<artist name>", "value":"pass"|"fail"|"pending"},
+    {"type":"artist_note", "name":"<artist name>", "value":"<note text>"},
+    {"type":"order_qty", "name":"<menu item name>", "value": <integer quantity>},
+    {"type":"drink_price", "name":"<menu item name>", "value": <number>}
+  ]
+}
+Rules:
+- For pure search/question requests, "updates" must be an empty array — never guess an edit the user didn't ask for.
+- Only include an update if the user's request is clearly an instruction to change that specific field.
+- Use the exact "name" string as it appears in the provided data so the app can match it.
+- If you cannot find a confident match in the data, say so in "reply" and return an empty "updates" array.
+- Keep "reply" short (1-3 sentences), since it will be read aloud.`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{role: "user", content: query}]
+      })
+    });
+    const data = await response.json();
+    const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+    const cleaned = textBlocks.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(cleaned);
+
+    assistantLastReply = parsed.reply || '';
+    document.getElementById('assistant-response-wrap').style.display = 'block';
+    document.getElementById('assistant-reply-text').textContent = assistantLastReply;
+    speakText(assistantLastReply);
+
+    assistantHistory.unshift({q: query, a: assistantLastReply});
+    if(assistantHistory.length > 10) assistantHistory.pop();
+    renderAssistantHistory();
+
+    if(Array.isArray(parsed.updates) && parsed.updates.length > 0){
+      assistantPendingUpdates = parsed.updates;
+      renderAssistantConfirm();
+    } else {
+      assistantPendingUpdates = [];
+      document.getElementById('assistant-confirm-wrap').style.display = 'none';
+    }
+
+    input.value = '';
+  }catch(e){
+    assistantLastReply = 'ขอโทษครับ เกิดข้อผิดพลาด เช็คอินเทอร์เน็ตแล้วลองใหม่อีกครั้ง';
+    document.getElementById('assistant-response-wrap').style.display = 'block';
+    document.getElementById('assistant-reply-text').textContent = assistantLastReply;
+  }finally{
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'ส่ง';
+  }
+}
+
+function describeUpdate(u){
+  const labels = {
+    artist_score: `เปลี่ยนคะแนน "${u.name}" เป็น ${u.value}`,
+    artist_status: `เปลี่ยนสถานะ "${u.name}" เป็น ${STATUS_LABEL[u.value] || u.value}`,
+    artist_note: `เปลี่ยนหมายเหตุ "${u.name}" เป็น "${u.value}"`,
+    order_qty: `เปลี่ยนจำนวนสั่ง "${u.name}" เป็น ${u.value}`,
+    drink_price: `เปลี่ยนราคา "${u.name}" เป็น ฿${u.value}`,
+  };
+  return labels[u.type] || JSON.stringify(u);
+}
+
+function renderAssistantConfirm(){
+  const wrap = document.getElementById('assistant-confirm-wrap');
+  const list = document.getElementById('assistant-confirm-list');
+  list.innerHTML = assistantPendingUpdates.map(u => `<div class="ai-review-row">${escapeHtml(describeUpdate(u))}</div>`).join('');
+  wrap.style.display = 'block';
+}
+
+function cancelAssistantUpdates(){
+  assistantPendingUpdates = [];
+  document.getElementById('assistant-confirm-wrap').style.display = 'none';
+}
+
+async function applyAssistantUpdates(){
+  assistantPendingUpdates.forEach(u => {
+    if(u.type === 'artist_score' || u.type === 'artist_status' || u.type === 'artist_note'){
+      const artist = findBestArtistMatch(u.name);
+      if(!artist) return;
+      if(u.type === 'artist_score') artist.score = Math.max(0, Math.min(10, Number(u.value) || 0));
+      if(u.type === 'artist_status' && ['pass','fail','pending'].includes(u.value)) artist.status = u.value;
+      if(u.type === 'artist_note') artist.note = String(u.value || '');
+    } else if(u.type === 'order_qty'){
+      const menuItem = findBestMenuMatch(u.name);
+      if(!menuItem) return;
+      state.order[menuItem.id] = Math.max(0, parseInt(u.value) || 0);
+    } else if(u.type === 'drink_price'){
+      const menuItem = findBestMenuMatch(u.name);
+      if(!menuItem) return;
+      menuItem.price = Math.max(0, Number(u.value) || 0);
+    }
+  });
+  await saveState();
+  renderArtists();
+  renderDays();
+  renderOrder();
+  renderMenuManageList();
+  assistantPendingUpdates = [];
+  document.getElementById('assistant-confirm-wrap').style.display = 'none';
+  speakText('แก้ไขข้อมูลเรียบร้อยแล้วครับ');
+}
+
+function renderAssistantHistory(){
+  const el = document.getElementById('assistant-history');
+  if(assistantHistory.length === 0){
+    el.innerHTML = '<div class="empty">ยังไม่มีประวัติการถาม</div>';
+    return;
+  }
+  el.innerHTML = assistantHistory.map(h => `
+    <div class="assistant-hist-item">
+      <div class="q">🗣️ ${escapeHtml(h.q)}</div>
+      <div class="a">${escapeHtml(h.a)}</div>
+    </div>
+  `).join('');
+}
+
+
 function switchTab(id, btn){
   document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1072,6 +1411,7 @@ function renderAll(){
   renderDays();
   renderMenuManageList();
   renderOrder();
+  renderAssistantHistory();
 }
 
 /* ---------- ARTISTS ---------- */
@@ -1614,7 +1954,7 @@ function buildOrderSlipDom(orderEntries){
       <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; color:#FFFFFF;">ยอดรวมทั้งหมด</span>
       <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; color:#E8B94A;"><span style="margin-right:2px;">฿</span>${grandTotal.toLocaleString()}</span>
     </div>
-    <div style="text-align:center; font-size:10px; color:rgba(255,255,255,0.4); margin-top:18px;">D-VIBE • ใบสั่งซื้อที่สร้างจากแอป (v21)</div>
+    <div style="text-align:center; font-size:10px; color:rgba(255,255,255,0.4); margin-top:18px;">D-VIBE • ใบสั่งซื้อที่สร้างจากแอป (v22)</div>
   `;
   document.body.appendChild(wrap);
   return wrap;
