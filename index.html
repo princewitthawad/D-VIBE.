@@ -175,45 +175,6 @@
     padding:8px 0; border-bottom:1px dashed var(--line); font-size:12.5px; color:var(--muted);
   }
   .pre-show-row .time{color:var(--red); font-family:'Oswald'; font-size:12.5px; flex-shrink:0;}
-  .ai-fill-box{
-    background:var(--surface-2); border:1px solid var(--red-dim); border-radius:12px;
-    padding:12px;
-  }
-  .ai-fill-box textarea{
-    width:100%; background:var(--surface); border:1px solid var(--line); border-radius:8px;
-    color:var(--text); padding:10px; font-family:'Work Sans'; font-size:13px; resize:vertical;
-  }
-  .ai-review-row{
-    background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
-    padding:10px; margin-bottom:8px;
-  }
-  .ai-review-row .top{display:flex; align-items:center; gap:8px; margin-bottom:8px;}
-  .ai-review-row input[type="text"], .ai-review-row input[type="number"], .ai-review-row select{
-    background:var(--surface); border:1px solid var(--line); border-radius:6px;
-    color:var(--text); padding:6px 8px; font-size:12.5px; font-family:'Work Sans';
-  }
-  .ai-review-row .grid{display:grid; grid-template-columns:1fr 1fr; gap:6px;}
-  .mic-btn{
-    width:44px; height:44px; border-radius:50%; border:none; flex-shrink:0;
-    background:var(--surface-2); border:1px solid var(--line); font-size:18px; cursor:pointer;
-    touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
-  }
-  .mic-btn.recording{
-    background:linear-gradient(90deg, var(--red), var(--purple));
-    animation:micPulse 1.2s infinite;
-  }
-  @keyframes micPulse{
-    0%{box-shadow:0 0 0 0 rgba(196,18,48,0.55);}
-    70%{box-shadow:0 0 0 12px rgba(196,18,48,0);}
-    100%{box-shadow:0 0 0 0 rgba(196,18,48,0);}
-  }
-  .assistant-reply-card{border-color:var(--red-dim); font-size:14px; line-height:1.6;}
-  .assistant-hist-item{
-    padding:8px 0; border-bottom:1px solid var(--line); font-size:12.5px;
-  }
-  .assistant-hist-item:last-child{border-bottom:none;}
-  .assistant-hist-item .q{color:var(--text); font-weight:600;}
-  .assistant-hist-item .a{color:var(--muted); margin-top:3px;}
   .day-card{margin-bottom:12px;}
   .day-card .day-label{
     font-family:'Oswald'; font-size:15px; letter-spacing:0.05em; text-transform:uppercase;
@@ -286,6 +247,85 @@
   .toggle-link{color:var(--amber); font-size:12.5px; background:none; border:none; cursor:pointer; padding:0;}
   .hint{font-size:11px; color:var(--muted); margin-top:6px;}
 
+
+  /* ---------- D-VIBE NATURAL LANGUAGE + VOICE ASSISTANT ---------- */
+  textarea{
+    background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    border-radius:10px; padding:10px 11px; font-size:14px; font-family:'Work Sans';
+    width:100%; resize:vertical; min-height:46px;
+  }
+  textarea:focus{outline:1px solid var(--amber);}
+  .assistant-hero{
+    background:
+      radial-gradient(circle at 12% 10%, rgba(196,18,48,.24), transparent 44%),
+      radial-gradient(circle at 88% 0%, rgba(123,63,176,.22), transparent 46%),
+      linear-gradient(145deg, rgba(38,21,35,.98), rgba(17,9,16,.98));
+    border:1px solid var(--line); border-radius:18px; padding:16px; margin-bottom:12px;
+    box-shadow:0 14px 36px rgba(0,0,0,.22);
+  }
+  .assistant-title{display:flex; align-items:center; gap:10px; font-family:'Oswald'; font-size:20px; color:var(--gold);}
+  .assistant-orb{
+    width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(circle at 35% 30%, #f4d77d, var(--red) 55%, #3a102c 100%);
+    box-shadow:0 0 20px rgba(196,18,48,.55), 0 0 30px rgba(123,63,176,.25);
+  }
+  .assistant-status{display:flex; align-items:center; gap:7px; font-size:11px; color:var(--muted); margin-top:8px; flex-wrap:wrap;}
+  .status-dot{width:7px; height:7px; border-radius:50%; background:var(--good); box-shadow:0 0 8px rgba(232,185,74,.7);}
+  .status-dot.warn{background:var(--red); box-shadow:0 0 8px rgba(196,18,48,.7);}
+  .assistant-log{
+    height:300px; overflow-y:auto; padding:4px; display:flex; flex-direction:column; gap:9px;
+    scroll-behavior:smooth;
+  }
+  .chat-msg{max-width:88%; padding:10px 12px; border-radius:14px; font-size:13px; line-height:1.45; white-space:pre-wrap; word-break:break-word;}
+  .chat-msg.user{align-self:flex-end; background:linear-gradient(135deg, var(--red-dim), var(--purple-dim)); color:#fff; border-bottom-right-radius:4px;}
+  .chat-msg.assistant{align-self:flex-start; background:var(--surface-2); border:1px solid var(--line); border-bottom-left-radius:4px;}
+  .chat-msg .stamp{display:block; font-size:9px; color:rgba(255,255,255,.38); margin-top:5px;}
+  .assistant-compose{display:grid; grid-template-columns:1fr 44px 54px; gap:8px; align-items:end; margin-top:10px;}
+  .assistant-send,.assistant-mic{
+    height:44px; border-radius:11px; border:1px solid var(--line); color:#fff; cursor:pointer; font-size:18px;
+  }
+  .assistant-send{background:linear-gradient(135deg, var(--gold), var(--red)); color:#1a0508; font-size:13px; font-weight:700;}
+  .assistant-mic{background:var(--surface-2);}
+  .assistant-mic.listening,.voice-fab.listening{animation:micPulse 1s ease-in-out infinite; background:var(--red);}
+  @keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(196,18,48,.45)}50%{box-shadow:0 0 0 11px rgba(196,18,48,0)}}
+  .command-chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+  .command-chip{background:transparent; border:1px solid var(--line); color:var(--muted); border-radius:20px; padding:6px 9px; font-size:10.5px; cursor:pointer;}
+  .command-chip:active{border-color:var(--amber); color:var(--amber);}
+  .assistant-toolbar{display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-top:10px;}
+  .voice-toggle{display:flex; gap:7px; align-items:center; font-size:11px; color:var(--muted);}
+  .voice-toggle input{width:18px; height:18px;}
+  .result-card{
+    width:100%; text-align:left; background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:11px; margin-bottom:8px; color:var(--text); cursor:pointer;
+  }
+  .result-card:active{transform:scale(.99); border-color:var(--amber-dim);}
+  .result-type{font-size:10px; color:var(--amber); text-transform:uppercase; letter-spacing:.06em;}
+  .result-title{font-size:13.5px; font-weight:700; margin-top:3px;}
+  .result-meta{font-size:11px; color:var(--muted); margin-top:3px; line-height:1.4;}
+  .voice-fab{
+    position:fixed; z-index:42; bottom:78px;
+    right:calc(max(16px, (100vw - 520px)/2 + 16px));
+    width:50px; height:50px; border-radius:50%; border:1px solid rgba(255,255,255,.16);
+    background:linear-gradient(145deg, var(--red), var(--purple)); color:white; font-size:21px;
+    box-shadow:0 10px 24px rgba(0,0,0,.38),0 0 18px rgba(196,18,48,.35); cursor:pointer;
+  }
+  .booking-form-grid{display:grid; grid-template-columns:1fr 1fr; gap:9px;}
+  .booking-row{padding:11px 0; border-bottom:1px solid var(--line); display:flex; gap:9px; align-items:flex-start;}
+  .booking-row:last-child{border-bottom:none;}
+  .booking-date{font-family:'Oswald'; color:var(--gold); min-width:82px; font-size:12px; line-height:1.35;}
+  .booking-main{flex:1; min-width:0;}
+  .booking-main strong{font-size:13.5px;}
+  .booking-main .meta{font-size:11px; color:var(--muted); margin-top:3px;}
+  .assistant-note{font-size:10.5px; color:var(--muted); line-height:1.45; margin-top:8px;}
+  .endpoint-row{display:grid; grid-template-columns:1fr auto; gap:8px; margin-top:8px;}
+  .flash-target{animation:flashTarget 1.6s ease;}
+  @keyframes flashTarget{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 2px var(--amber),0 0 22px rgba(232,185,74,.35)}}
+  @media (max-width:390px){
+    .assistant-compose{grid-template-columns:1fr 42px;}
+    .assistant-send{grid-column:1/-1;}
+    .booking-form-grid{grid-template-columns:1fr;}
+  }
+
 </style>
 </head>
 <body>
@@ -306,7 +346,7 @@
           <div style="flex:1;">
             <label class="field">ประเภท</label>
             <select id="a-type">
-              <option value="band">วง</option>
+              <option value="band">วงดนตรีสด</option>
               <option value="singer">นักร้องเดี่ยว</option>
               <option value="dj">ดีเจ</option>
             </select>
@@ -319,7 +359,7 @@
         <div style="display:flex; gap:10px;">
           <div style="flex:1;">
             <label class="field">วันที่ออดิชั่น</label>
-            <input id="a-date" type="number" min="1" max="31" placeholder="เช่น 4">
+            <input id="a-date" type="date">
           </div>
           <div style="flex:1;">
             <label class="field">เวลาออดิชั่น</label>
@@ -335,9 +375,10 @@
         <label class="field">หมายเหตุ (ถ้ามี)</label>
         <input id="a-note" placeholder="เช่น สากล EDM ไทยผสม, มา 2 คน">
         <button class="btn block" style="margin-top:14px;" onclick="addArtist()">+ เพิ่มเข้ารายชื่อ</button>
+        <div id="artist-add-feedback" style="display:none;margin-top:10px;padding:9px 10px;border-radius:9px;background:rgba(232,185,74,.10);border:1px solid rgba(232,185,74,.30);font-size:11.5px;color:var(--gold);line-height:1.45;"></div>
       </div>
 
-      <h2 class="section">รายชื่อทั้งหมด (เรียงตามคะแนน)</h2>
+      <h2 class="section">รายชื่อทั้งหมด (รายการใหม่อยู่บนสุด)</h2>
       <div class="card" id="artist-list"></div>
     </section>
 
@@ -350,7 +391,38 @@
         <p class="hint">เวลานี้ใช้ร่วมกันทุกวัน แก้ไขได้ตลอดเวลา</p>
       </div>
 
-      <h2 class="section">ตารางคิวรายวัน</h2>
+
+
+      <h2 class="section">คิวงานตามวันที่จริง</h2>
+      <div class="card">
+        <div class="booking-form-grid">
+          <div style="grid-column:1/-1;">
+            <label class="field" style="margin-top:0;">วง / นักร้อง / ดีเจ</label>
+            <select id="b-artist"></select>
+          </div>
+          <div>
+            <label class="field">วันที่</label>
+            <input id="b-date" type="date">
+          </div>
+          <div>
+            <label class="field">เวลาเริ่ม</label>
+            <input id="b-start" type="time" value="20:30">
+          </div>
+          <div>
+            <label class="field">เวลาจบ</label>
+            <input id="b-end" type="time" value="21:15">
+          </div>
+          <div>
+            <label class="field">หมายเหตุ</label>
+            <input id="b-note" placeholder="เช่น งานร้าน / งานนอก / ออดิชั่น">
+          </div>
+        </div>
+        <button class="btn block" style="margin-top:12px;" onclick="addBooking()">+ เพิ่มคิวตามวันที่</button>
+        <p class="hint">คิวส่วนนี้ค้นหาได้ทั้งวัน เวลา วันที่ เดือน และปี และสั่งแก้ไขด้วยเสียงได้</p>
+      </div>
+      <div class="card" id="booking-list"></div>
+
+      <h2 class="section">ตารางคิวรายสัปดาห์</h2>
       <div id="day-list"></div>
     </section>
 
@@ -362,14 +434,6 @@
           <button class="toggle-link" onclick="toggleMenuForm()">+ จัดการเมนู</button>
         </div>
         <div id="menu-form" style="display:none; margin-top:10px;">
-          <div class="ai-fill-box">
-            <div style="font-family:'Oswald'; font-size:13px; letter-spacing:0.03em; color:var(--red); margin-bottom:6px;">🤖 ให้ AI กรอกข้อมูลให้</div>
-            <p class="hint" style="margin:0 0 8px;">วางข้อความราคา/รายการสินค้าที่ได้มา (คัดลอกจากไหนก็ได้) แล้วให้ AI แกะเป็นรายการเมนูให้อัตโนมัติ — ก่อนบันทึกจะให้ตรวจสอบและแก้ไขได้ก่อนเสมอ</p>
-            <textarea id="ai-fill-input" rows="5" placeholder="วางข้อความตรงนี้ เช่น ชื่อสินค้า ราคา หน่วยนับ ฯลฯ"></textarea>
-            <button class="btn block" style="margin-top:8px; background:linear-gradient(90deg, var(--red), var(--purple));" onclick="aiParseMenuText()" id="ai-fill-btn">✨ ให้ AI แกะข้อมูล</button>
-            <p id="ai-fill-status" class="hint" style="display:none;"></p>
-          </div>
-          <div style="height:1px; background:var(--line); margin:16px 0;"></div>
           <label class="field" style="margin-top:0;">ชื่อสินค้า</label>
           <input id="m-name" placeholder="เช่น เบียร์สด / วิสกี้">
           <label class="field">ยี่ห้อ</label>
@@ -421,64 +485,51 @@
       <div style="height:70px;"></div>
     </section>
 
-    <!-- TAB 4: AI SEARCH / VOICE ASSISTANT -->
-    <section class="tabpanel" id="tab-search">
-      <h2 class="section" style="margin-top:0">🔍 ค้นหา / สั่งงานด้วยเสียง</h2>
-      <div class="card" id="api-key-card" style="border-color:var(--red-dim);">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-family:'Oswald'; font-size:13px; color:var(--red);">🔑 Anthropic API Key</span>
-          <button class="toggle-link" onclick="toggleApiKeyForm()">แก้ไข</button>
+    <!-- TAB 4: NATURAL LANGUAGE + VOICE ASSISTANT -->
+    <section class="tabpanel" id="tab-assistant">
+      <div class="assistant-hero">
+        <div class="assistant-title"><span class="assistant-orb">✦</span><span>D-VIBE ASSISTANT</span></div>
+        <div class="assistant-status">
+          <span class="status-dot" id="assistant-status-dot"></span>
+          <span id="assistant-status-text">พร้อมรับคำสั่งภาษาธรรมชาติ</span>
+          <span>•</span><span id="assistant-engine-label">Local Command Engine</span>
         </div>
-        <p id="api-key-status" class="hint" style="margin:6px 0 0;"></p>
-        <div id="api-key-form" style="display:none; margin-top:8px;">
-          <input id="api-key-input" type="password" placeholder="วาง API key ของคุณ (sk-ant-...)">
-          <p class="hint" style="margin:6px 0 0;">
-            ต้องใส่ API key ของตัวเองเพื่อให้ฟีเจอร์ AI (ค้นหาด้วยเสียง/พิมพ์ และ AI กรอกเมนู) ทำงานได้ตอนเปิดผ่านลิงก์ GitHub Pages
-            — ขอได้ฟรีที่ <span style="color:var(--amber);">console.anthropic.com</span>
-            <br><b style="color:var(--red);">คำเตือน:</b> key นี้จะถูกเก็บไว้ในเบราว์เซอร์ของเครื่องนี้เท่านั้น อย่าแชร์ลิงก์เว็บนี้ให้คนที่ไม่ไว้ใจ เพราะถ้าดูซอร์สโค้ดหน้าเว็บอาจเห็น key ได้ และจะถูกเรียกเก็บเงินจากบัญชีคุณ
-          </p>
-          <button class="btn block" style="margin-top:8px;" onclick="saveApiKey()">บันทึก Key</button>
-        </div>
+        <p class="assistant-note">ค้นหาแบบคำตรงหรือใกล้เคียง และสั่งเพิ่ม แก้ไข ลบ จัดคิว หรือเปลี่ยนจำนวนเครื่องดื่มได้จากประโยคเดียว</p>
       </div>
+
       <div class="card">
-        <p class="hint" style="margin:0 0 10px;">พิมพ์หรือพูดด้วยภาษาธรรมชาติได้เลย เช่น "วงฮานามิเล่นวันไหน", "เพิ่มคะแนนวงยับเยินเป็น 8", "เหล้าโซจูเหลือกี่ลัง" — ค้นหาแบบใกล้เคียงได้แม้พิมพ์/พูดไม่ตรงเป๊ะ</p>
-        <div style="display:flex; gap:8px; align-items:flex-end;">
-          <div style="flex:1;">
-            <input id="assistant-input" type="text" placeholder="พิมพ์คำถามหรือคำสั่ง..." onkeydown="if(event.key==='Enter') submitAssistantQuery();">
-          </div>
-          <button id="assistant-mic-btn" class="mic-btn" title="กดค้างเพื่อพูด แล้วปล่อยเพื่อส่ง"
-            onpointerdown="startVoiceHold(event)" onpointerup="stopVoiceHold()"
-            onpointerleave="stopVoiceHold()" onpointercancel="stopVoiceHold()">🎙️</button>
+        <div class="assistant-log" id="assistant-log"></div>
+        <div class="assistant-compose">
+          <textarea id="assistant-input" rows="2" placeholder="เช่น หา DJ อ๋อม / เพิ่มคิววงฮานามิ วันที่ 7 สิงหาคม 2569 เวลา 20:30 / เปลี่ยนราคาเบียร์สิงห์เป็น 678"></textarea>
+          <button class="assistant-mic" id="assistant-mic" onclick="startVoiceCommand()" aria-label="พูดคำสั่ง">🎙️</button>
+          <button class="assistant-send" onclick="submitAssistantCommand()">ส่ง</button>
         </div>
-        <button class="btn block" style="margin-top:10px;" onclick="submitAssistantQuery()" id="assistant-send-btn">ส่ง</button>
-        <p id="assistant-voice-support-notice" class="hint" style="display:none;"></p>
-        <p id="assistant-listening" class="hint" style="display:none; color:var(--red);">🎙️ กำลังฟัง... พูดค้างไว้ ปล่อยนิ้วเมื่อพูดจบ</p>
-      </div>
-
-      <div id="assistant-response-wrap" style="display:none;">
-        <h2 class="section">คำตอบ</h2>
-        <div class="card assistant-reply-card">
-          <div id="assistant-reply-text"></div>
-          <button class="toggle-link" style="margin-top:8px;" onclick="speakLastReply()">🔊 อ่านออกเสียงอีกครั้ง</button>
+        <div class="assistant-toolbar">
+          <label class="voice-toggle"><input id="speak-toggle" type="checkbox" checked onchange="toggleAssistantSpeech(this.checked)"> ตอบกลับด้วยเสียง</label>
+          <button class="toggle-link" onclick="undoLastAssistantAction()">↶ ย้อนกลับคำสั่งล่าสุด</button>
+        </div>
+        <div class="command-chips">
+          <button class="command-chip" onclick="useCommandExample('หาดีเจที่รอออดิชั่น')">หาดีเจรอออดิชั่น</button>
+          <button class="command-chip" onclick="useCommandExample('ดูคิววันศุกร์')">ดูคิววันศุกร์</button>
+          <button class="command-chip" onclick="useCommandExample('หาเบียร์สิงห์')">หาเบียร์สิงห์</button>
+          <button class="command-chip" onclick="useCommandExample('ช่วยบอกตัวอย่างคำสั่ง')">ตัวอย่างคำสั่ง</button>
         </div>
       </div>
 
-      <div id="assistant-confirm-wrap" style="display:none;">
-        <h2 class="section">ยืนยันการแก้ไข</h2>
-        <div class="card">
-          <p class="hint" style="margin:0 0 10px;">AI จะแก้ไขข้อมูลตามนี้ ยืนยันก่อนบันทึกจริง:</p>
-          <div id="assistant-confirm-list"></div>
-          <button class="btn block" style="margin-top:12px;" onclick="applyAssistantUpdates()">✓ ยืนยันแก้ไข</button>
-          <button class="btn secondary block" style="margin-top:8px;" onclick="cancelAssistantUpdates()">ยกเลิก</button>
-        </div>
-      </div>
+      <h2 class="section">ผลการค้นหา</h2>
+      <div id="assistant-results"></div>
 
-      <div id="assistant-history-wrap">
-        <h2 class="section">ประวัติล่าสุด</h2>
-        <div id="assistant-history" class="card"></div>
-      </div>
-      <div style="height:70px;"></div>
+      <details class="card">
+        <summary style="cursor:pointer; color:var(--amber); font-size:12px;">เชื่อมต่อ AI ออนไลน์ผ่านเซิร์ฟเวอร์ของร้าน (ทางเลือก)</summary>
+        <p class="assistant-note">กรอก URL ของ backend ที่คืนค่า JSON รูปแบบ <code>{reply, normalized_command}</code> ระบบจะให้ AI แปลงภาษาพูดที่ซับซ้อนเป็นคำสั่งมาตรฐาน แล้วให้แอปเป็นผู้แก้ข้อมูลจริง</p>
+        <div class="endpoint-row">
+          <input id="ai-endpoint" placeholder="เช่น https://your-domain.com/api/dvibe-assistant">
+          <button class="btn secondary" onclick="saveAssistantEndpoint()">บันทึก</button>
+        </div>
+        <label class="voice-toggle" style="margin-top:9px;"><input id="remote-toggle" type="checkbox" onchange="toggleRemoteAssistant(this.checked)"> ใช้ AI ออนไลน์เมื่อคำสั่งในเครื่องตีความไม่ได้</label>
+      </details>
     </section>
+
   </main>
 
   <div class="totalbar" id="totalbar" style="display:none;">
@@ -490,8 +541,9 @@
     <button class="active" data-tab="tab-artists" onclick="switchTab('tab-artists', this)"><span class="ic">🎤</span>ทีมงาน</button>
     <button data-tab="tab-schedule" onclick="switchTab('tab-schedule', this)"><span class="ic">📅</span>ตารางคิว</button>
     <button data-tab="tab-drinks" onclick="switchTab('tab-drinks', this)"><span class="ic">🍺</span>เครื่องดื่ม</button>
-    <button data-tab="tab-search" onclick="switchTab('tab-search', this)"><span class="ic">🔍</span>ค้นหา</button>
+    <button data-tab="tab-assistant" onclick="switchTab('tab-assistant', this)"><span class="ic">✦</span>ผู้ช่วย</button>
   </nav>
+  <button class="voice-fab" id="voice-fab" onclick="startVoiceCommand()" aria-label="เปิดคำสั่งเสียง">🎙️</button>
 </div>
 
 <!-- Picker overlay for adding artists to a break -->
@@ -501,18 +553,6 @@
     <h3 id="picker-title">เลือกทีมงาน</h3>
     <div id="picker-list"></div>
     <button class="btn block" style="margin-top:12px;" onclick="closePicker()">เสร็จสิ้น</button>
-  </div>
-</div>
-
-<!-- AI menu-extraction review overlay -->
-<div class="overlay" id="ai-review-overlay">
-  <div class="sheet">
-    <div class="handle"></div>
-    <h3>ตรวจสอบก่อนเพิ่มเข้าเมนู</h3>
-    <p class="hint" style="margin:0 0 10px;">AI แกะข้อมูลได้ตามนี้ ติ๊กออกรายการที่ไม่ต้องการ หรือแก้ไขราคา/ประเภทก่อนกดยืนยัน</p>
-    <div id="ai-review-list"></div>
-    <button class="btn block" style="margin-top:12px;" onclick="confirmAiFillItems()">✓ เพิ่มรายการที่เลือกเข้าเมนู</button>
-    <button class="btn secondary block" style="margin-top:8px;" onclick="closeAiReview()">ยกเลิก</button>
   </div>
 </div>
 
@@ -540,7 +580,7 @@ const DAYS = [
   {key:'sat', label:'เสาร์'},
   {key:'sun', label:'อาทิตย์'},
 ];
-const TYPE_LABEL = {band:'วง', singer:'นักร้องเดี่ยว', dj:'ดีเจ'};
+const TYPE_LABEL = {band:'วงดนตรีสด', singer:'นักร้องเดี่ยว', dj:'ดีเจ'};
 const STATUS_LABEL = {pass:'ผ่าน', fail:'ไม่ผ่าน', pending:'รอออดิชั่น'};
 const CAT_LABEL = {liquor:'เหล้า', beer:'เบียร์', mixer:'น้ำ/โซดา/มิกเซอร์'};
 
@@ -630,7 +670,9 @@ function defaultState(){
     breakTimes,
     schedule,
     menu: [],
-    order: {}
+    order: {},
+    bookings: [],
+    assistant: {speak:true, history:[], remoteEnabled:false}
   };
 }
 
@@ -739,6 +781,10 @@ async function loadState(){
   BREAKS.forEach(b => { if(!state.breakTimes[b.key]) state.breakTimes[b.key] = {start: b.defaultStart, end: b.defaultEnd}; });
   if(!state.menu) state.menu = [];
   if(!state.order) state.order = {};
+  if(!Array.isArray(state.bookings)) state.bookings = [];
+  if(!state.assistant) state.assistant = {speak:true, history:[], remoteEnabled:false};
+  if(!Array.isArray(state.assistant.history)) state.assistant.history = [];
+  migrateArtistDates();
   await migrateToFiveBreaks();
   await seedAuditionsIfNeeded();
   await seedDrinksIfNeeded();
@@ -1138,368 +1184,6 @@ async function saveState(){
 
 function uid(){ return Math.random().toString(36).slice(2,10); }
 
-/* ---------- AI search / voice assistant ---------- */
-/* ---------- User-supplied Anthropic API key (needed when hosted outside claude.ai) ---------- */
-function getApiKey(){
-  try{ return localStorage.getItem('dvibe-anthropic-key') || ''; }catch(e){ return ''; }
-}
-function saveApiKey(){
-  const val = document.getElementById('api-key-input').value.trim();
-  try{ localStorage.setItem('dvibe-anthropic-key', val); }catch(e){}
-  document.getElementById('api-key-input').value = '';
-  document.getElementById('api-key-form').style.display = 'none';
-  renderApiKeyStatus();
-}
-function toggleApiKeyForm(){
-  const f = document.getElementById('api-key-form');
-  f.style.display = (f.style.display === 'none') ? 'block' : 'none';
-}
-function renderApiKeyStatus(){
-  const key = getApiKey();
-  document.getElementById('api-key-status').textContent = key
-    ? `✅ ตั้งค่าแล้ว (...${key.slice(-6)})`
-    : '⚠️ ยังไม่ได้ตั้งค่า — ฟีเจอร์ AI จะใช้ไม่ได้จนกว่าจะใส่ key';
-}
-function anthropicHeaders(){
-  const key = getApiKey();
-  const headers = {"Content-Type": "application/json"};
-  if(key){
-    // Only added when the user has supplied their own key (needed for external
-    // hosting like GitHub Pages). Inside Claude.ai's own preview, no key is
-    // needed, so we leave headers untouched in that case.
-    headers["x-api-key"] = key;
-    headers["anthropic-version"] = "2023-06-01";
-    headers["anthropic-dangerous-direct-browser-access"] = "true";
-  }
-  return headers;
-}
-
-let assistantRecognition = null;
-let assistantIsRecording = false;
-let assistantLastReply = '';
-let assistantPendingUpdates = [];
-let assistantHistory = [];
-
-function normalizeForMatch(s){
-  return String(s || '').toLowerCase().replace(/\s+/g, '').trim();
-}
-
-// Simple Levenshtein-based similarity score 0..1 (1 = identical), plus a boost
-// for substring containment, so "ใกล้เคียง" (near) matches work well for both
-// typos and partial names spoken by voice.
-function similarity(a, b){
-  a = normalizeForMatch(a); b = normalizeForMatch(b);
-  if(!a || !b) return 0;
-  if(a === b) return 1;
-  if(a.includes(b) || b.includes(a)) return 0.85;
-  const m = a.length, n = b.length;
-  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
-  for(let i=0; i<=m; i++) dp[i][0] = i;
-  for(let j=0; j<=n; j++) dp[0][j] = j;
-  for(let i=1; i<=m; i++){
-    for(let j=1; j<=n; j++){
-      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
-    }
-  }
-  const dist = dp[m][n];
-  return 1 - dist / Math.max(m, n);
-}
-
-function findBestArtistMatch(nameQuery){
-  let best = null, bestScore = 0;
-  state.artists.forEach(a => {
-    const s = similarity(a.name, nameQuery);
-    if(s > bestScore){ bestScore = s; best = a; }
-  });
-  return bestScore >= 0.4 ? best : null;
-}
-
-function findBestMenuMatch(nameQuery){
-  let best = null, bestScore = 0;
-  state.menu.forEach(m => {
-    const s = Math.max(similarity(m.name, nameQuery), similarity(m.name + ' ' + m.brand, nameQuery));
-    if(s > bestScore){ bestScore = s; best = m; }
-  });
-  return bestScore >= 0.4 ? best : null;
-}
-
-function checkVoiceSupport(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const notice = document.getElementById('assistant-voice-support-notice');
-  const micBtn = document.getElementById('assistant-mic-btn');
-  if(!SR){
-    notice.style.display = 'block';
-    notice.style.color = 'var(--red)';
-    notice.textContent = '🎙️ เบราว์เซอร์นี้ไม่รองรับปุ่มไมค์ในแอป (Safari บน iPhone ส่วนใหญ่ยังไม่รองรับ) — แต่พิมพ์คำถามได้ตามปกติ หรือแตะที่ช่องพิมพ์แล้วใช้ปุ่มไมค์บนคีย์บอร์ดของ iPhone เอง (ปุ่มไมค์เล็กๆ ข้างแป้นเว้นวรรค) พูดใส่ช่องพิมพ์ได้เลย ระบบนั้นแม่นยำกว่าและใช้ได้เสมอ';
-    micBtn.style.opacity = '0.4';
-    micBtn.title = 'ไม่รองรับในเบราว์เซอร์นี้ — ใช้ไมค์บนคีย์บอร์ดแทน';
-    return false;
-  }
-  return true;
-}
-
-function setupVoiceRecognition(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR) return null;
-  const rec = new SR();
-  rec.lang = 'th-TH';
-  rec.interimResults = false;
-  rec.maxAlternatives = 1;
-  rec.onresult = (e) => {
-    const transcript = e.results[0][0].transcript;
-    document.getElementById('assistant-input').value = transcript;
-    resetMicUI();
-    submitAssistantQuery();
-  };
-  rec.onend = () => { resetMicUI(); };
-  rec.onerror = (e) => {
-    resetMicUI();
-    const notice = document.getElementById('assistant-voice-support-notice');
-    notice.style.display = 'block';
-    notice.style.color = 'var(--red)';
-    const reasons = {
-      'not-allowed': 'ไม่ได้รับอนุญาตให้ใช้ไมค์ — เช็คการอนุญาตไมโครโฟนของเว็บนี้ใน Settings > Safari',
-      'no-speech': 'ไม่ได้ยินเสียงพูด ลองใหม่อีกครั้ง',
-      'network': 'ปัญหาเครือข่ายระหว่างแปลงเสียงเป็นข้อความ',
-    };
-    notice.textContent = '🎙️ ' + (reasons[e.error] || ('เกิดปัญหากับไมค์ (' + e.error + ')')) + ' — ลองพิมพ์แทน หรือใช้ไมค์บนคีย์บอร์ด iPhone';
-  };
-  return rec;
-}
-
-let assistantMicSafetyTimer = null;
-
-function resetMicUI(){
-  assistantIsRecording = false;
-  document.getElementById('assistant-mic-btn').classList.remove('recording');
-  document.getElementById('assistant-listening').style.display = 'none';
-  if(assistantMicSafetyTimer){ clearTimeout(assistantMicSafetyTimer); assistantMicSafetyTimer = null; }
-}
-
-function startVoiceHold(event){
-  event.preventDefault();
-  if(assistantIsRecording) return; // already holding, ignore repeat events
-  if(!checkVoiceSupport()) return;
-  if(!assistantRecognition){
-    assistantRecognition = setupVoiceRecognition();
-    if(!assistantRecognition) return;
-  }
-  document.getElementById('assistant-voice-support-notice').style.display = 'none';
-  assistantIsRecording = true;
-  document.getElementById('assistant-mic-btn').classList.add('recording');
-  document.getElementById('assistant-listening').style.display = 'block';
-  try{ assistantRecognition.start(); }catch(e){ /* already started */ }
-  // Safety net: if the browser's speech engine never fires onend/onresult/onerror
-  // (known to happen, causing the mic to look permanently "stuck"), force-reset
-  // the UI after 12 seconds so it never hangs.
-  assistantMicSafetyTimer = setTimeout(() => {
-    try{ assistantRecognition.stop(); }catch(e){}
-    resetMicUI();
-  }, 12000);
-}
-
-function stopVoiceHold(){
-  if(!assistantIsRecording || !assistantRecognition) return;
-  try{ assistantRecognition.stop(); }catch(e){ resetMicUI(); }
-}
-
-function speakText(text){
-  if(!window.speechSynthesis || !text) return;
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'th-TH';
-  utter.rate = 1.0;
-  window.speechSynthesis.speak(utter);
-}
-
-function speakLastReply(){
-  speakText(assistantLastReply);
-}
-
-function buildAppContextSummary(){
-  const artists = state.artists.map(a => ({
-    name: a.name, type: a.type, score: a.score, status: a.status,
-    auditionDate: a.auditionDate, auditionTime: a.auditionTime, note: a.note
-  }));
-  const scheduleByDay = {};
-  DAYS.forEach(d => {
-    scheduleByDay[d.label] = {};
-    BREAKS.forEach(b => {
-      const names = state.schedule[d.key][b.key].map(id => {
-        const a = artistById(id);
-        return a ? a.name : null;
-      }).filter(Boolean);
-      if(names.length) scheduleByDay[d.label][b.label] = names;
-    });
-  });
-  const menu = state.menu.map(m => ({
-    name: m.name, brand: m.brand, cat: m.cat, supplier: m.supplier,
-    unit: m.unit, price: m.price, orderedQty: state.order[m.id] || 0
-  }));
-  return {artists, scheduleByDay, menu};
-}
-
-async function submitAssistantQuery(){
-  const input = document.getElementById('assistant-input');
-  const query = input.value.trim();
-  if(!query) return;
-
-  const sendBtn = document.getElementById('assistant-send-btn');
-  sendBtn.disabled = true;
-  sendBtn.textContent = '⏳ กำลังคิด...';
-
-  const context = buildAppContextSummary();
-  const systemPrompt = `You are the voice/text assistant inside "D-VIBE", a Thai live-music venue's management app.
-You can see the current data below (artists/auditions, weekly schedule, drink menu with order quantities).
-The user will ask questions in Thai (typed or transcribed from speech) — answer using FUZZY/NEAR matching on
-names (they may mishear, mistype, or say partial names). You can also propose edits when asked to change
-something (e.g. change a score, change audition status, change a drink's order quantity, change a drink's price,
-add a note).
-
-IMPORTANT SCOPE RESTRICTION: You must answer ONLY using the app data provided below. Do not use any outside
-general knowledge, do not answer questions unrelated to this venue's artists/schedule/drink menu (e.g. general
-trivia, world facts, other topics), and do not browse or reference anything outside this data. If the user asks
-something outside this app's data, reply briefly in Thai that you can only help with the app's own information
-(artists, schedule, drink menu/orders), and return an empty "updates" array.
-
-Current data (JSON):
-${JSON.stringify(context)}
-
-Respond ONLY with raw JSON (no markdown fences, no extra text) in this exact shape:
-{
-  "reply": "a short, natural, spoken-friendly Thai sentence answering the question or describing the proposed change",
-  "updates": [
-    // zero or more of these, ONLY when the user clearly asked to change something:
-    {"type":"artist_score", "name":"<best-matching artist name from the data above>", "value": <number 0-10>},
-    {"type":"artist_status", "name":"<artist name>", "value":"pass"|"fail"|"pending"},
-    {"type":"artist_note", "name":"<artist name>", "value":"<note text>"},
-    {"type":"order_qty", "name":"<menu item name>", "value": <integer quantity>},
-    {"type":"drink_price", "name":"<menu item name>", "value": <number>}
-  ]
-}
-Rules:
-- For pure search/question requests, "updates" must be an empty array — never guess an edit the user didn't ask for.
-- Only include an update if the user's request is clearly an instruction to change that specific field.
-- Use the exact "name" string as it appears in the provided data so the app can match it.
-- If you cannot find a confident match in the data, say so in "reply" and return an empty "updates" array.
-- Keep "reply" short (1-3 sentences), since it will be read aloud.`;
-
-  try{
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: anthropicHeaders(),
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: [{role: "user", content: query}]
-      })
-    });
-    if(!response.ok){
-      const errBody = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errBody.slice(0,200)}`);
-    }
-    const data = await response.json();
-    const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
-    const cleaned = textBlocks.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(cleaned);
-
-    assistantLastReply = parsed.reply || '';
-    document.getElementById('assistant-response-wrap').style.display = 'block';
-    document.getElementById('assistant-reply-text').textContent = assistantLastReply;
-    speakText(assistantLastReply);
-
-    assistantHistory.unshift({q: query, a: assistantLastReply});
-    if(assistantHistory.length > 10) assistantHistory.pop();
-    renderAssistantHistory();
-
-    if(Array.isArray(parsed.updates) && parsed.updates.length > 0){
-      assistantPendingUpdates = parsed.updates;
-      renderAssistantConfirm();
-    } else {
-      assistantPendingUpdates = [];
-      document.getElementById('assistant-confirm-wrap').style.display = 'none';
-    }
-
-    input.value = '';
-  }catch(e){
-    assistantLastReply = getApiKey()
-      ? 'ขอโทษครับ เกิดข้อผิดพลาดตอนเรียก AI (' + e.message + ') เช็คอินเทอร์เน็ตหรือ API key แล้วลองใหม่'
-      : 'ยังไม่ได้ตั้งค่า API key ครับ กดปุ่ม "แก้ไข" ที่กล่อง 🔑 ด้านบนแล้วใส่ key ก่อนใช้งานฟีเจอร์นี้';
-    document.getElementById('assistant-response-wrap').style.display = 'block';
-    document.getElementById('assistant-reply-text').textContent = assistantLastReply;
-  }finally{
-    sendBtn.disabled = false;
-    sendBtn.textContent = 'ส่ง';
-  }
-}
-
-function describeUpdate(u){
-  const labels = {
-    artist_score: `เปลี่ยนคะแนน "${u.name}" เป็น ${u.value}`,
-    artist_status: `เปลี่ยนสถานะ "${u.name}" เป็น ${STATUS_LABEL[u.value] || u.value}`,
-    artist_note: `เปลี่ยนหมายเหตุ "${u.name}" เป็น "${u.value}"`,
-    order_qty: `เปลี่ยนจำนวนสั่ง "${u.name}" เป็น ${u.value}`,
-    drink_price: `เปลี่ยนราคา "${u.name}" เป็น ฿${u.value}`,
-  };
-  return labels[u.type] || JSON.stringify(u);
-}
-
-function renderAssistantConfirm(){
-  const wrap = document.getElementById('assistant-confirm-wrap');
-  const list = document.getElementById('assistant-confirm-list');
-  list.innerHTML = assistantPendingUpdates.map(u => `<div class="ai-review-row">${escapeHtml(describeUpdate(u))}</div>`).join('');
-  wrap.style.display = 'block';
-}
-
-function cancelAssistantUpdates(){
-  assistantPendingUpdates = [];
-  document.getElementById('assistant-confirm-wrap').style.display = 'none';
-}
-
-async function applyAssistantUpdates(){
-  assistantPendingUpdates.forEach(u => {
-    if(u.type === 'artist_score' || u.type === 'artist_status' || u.type === 'artist_note'){
-      const artist = findBestArtistMatch(u.name);
-      if(!artist) return;
-      if(u.type === 'artist_score') artist.score = Math.max(0, Math.min(10, Number(u.value) || 0));
-      if(u.type === 'artist_status' && ['pass','fail','pending'].includes(u.value)) artist.status = u.value;
-      if(u.type === 'artist_note') artist.note = String(u.value || '');
-    } else if(u.type === 'order_qty'){
-      const menuItem = findBestMenuMatch(u.name);
-      if(!menuItem) return;
-      state.order[menuItem.id] = Math.max(0, parseInt(u.value) || 0);
-    } else if(u.type === 'drink_price'){
-      const menuItem = findBestMenuMatch(u.name);
-      if(!menuItem) return;
-      menuItem.price = Math.max(0, Number(u.value) || 0);
-    }
-  });
-  await saveState();
-  renderArtists();
-  renderDays();
-  renderOrder();
-  renderMenuManageList();
-  assistantPendingUpdates = [];
-  document.getElementById('assistant-confirm-wrap').style.display = 'none';
-  speakText('แก้ไขข้อมูลเรียบร้อยแล้วครับ');
-}
-
-function renderAssistantHistory(){
-  const el = document.getElementById('assistant-history');
-  if(assistantHistory.length === 0){
-    el.innerHTML = '<div class="empty">ยังไม่มีประวัติการถาม</div>';
-    return;
-  }
-  el.innerHTML = assistantHistory.map(h => `
-    <div class="assistant-hist-item">
-      <div class="q">🗣️ ${escapeHtml(h.q)}</div>
-      <div class="a">${escapeHtml(h.a)}</div>
-    </div>
-  `).join('');
-}
-
-
 function switchTab(id, btn){
   document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1515,9 +1199,6 @@ function renderAll(){
   renderDays();
   renderMenuManageList();
   renderOrder();
-  renderAssistantHistory();
-  renderApiKeyStatus();
-  checkVoiceSupport();
 }
 
 /* ---------- ARTISTS ---------- */
@@ -1588,7 +1269,8 @@ function renderArtists(){
         </div>
       </div>
       <span class="status-pill status-${a.status}" onclick="cycleStatus('${a.id}')" style="cursor:pointer;">${STATUS_LABEL[a.status]}</span>
-      <button class="icon-btn" onclick="deleteArtist('${a.id}')">✕</button>
+      <button class="icon-btn" title="จัดเข้าตารางคิว" aria-label="จัดเข้าตารางคิว" onclick="openScheduleForArtist('${a.id}')">📅</button>
+      <button class="icon-btn" title="ลบรายชื่อ" aria-label="ลบรายชื่อ" onclick="deleteArtist('${a.id}')">✕</button>
     </div>
   `;}).join('');
 }
@@ -1709,157 +1391,6 @@ function toggleMenuForm(){
   const f = document.getElementById('menu-form');
   f.style.display = (f.style.display === 'none') ? 'block' : 'none';
 }
-
-/* ---------- AI-assisted paste-and-fill for menu items ---------- */
-let aiFillCandidates = [];
-
-async function aiParseMenuText(){
-  const input = document.getElementById('ai-fill-input').value.trim();
-  const statusEl = document.getElementById('ai-fill-status');
-  const btn = document.getElementById('ai-fill-btn');
-  if(!input){
-    statusEl.style.display = 'block';
-    statusEl.style.color = 'var(--red)';
-    statusEl.textContent = 'วางข้อความก่อนนะครับ';
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = '⏳ กำลังแกะข้อมูล...';
-  statusEl.style.display = 'block';
-  statusEl.style.color = 'var(--muted)';
-  statusEl.textContent = '';
-
-  const systemPrompt = `You are a data-extraction assistant for a Thai bar's drink/liquor menu app.
-Extract EVERY distinct product mentioned in the user's pasted text into a JSON array.
-Each item must be an object with exactly these fields:
-- name: string, product name as given (Thai or English, keep as-is)
-- brand: string, brand name if distinguishable from the product name, else ""
-- cat: one of "liquor" | "beer" | "mixer" (mixer = soft drinks, water, soda, juice, energy drinks, mixers)
-- supplier: your best guess of one of "singha" | "coke" | "liquor" based on brand context
-  (Coca-Cola/Fanta/Sprite/Schweppes/Monster/A&W/Minute Maid/น้ำทิพย์ => "coke";
-   Singha/Leo/Thai beer/soda/water brands => "singha"; spirits/liquor/whisky/vodka/soju => "liquor")
-- unit: the pack/case unit as given (e.g. ลัง, ถาด, แพ็ก, ขวด) — if not stated, use "ลัง"
-- price: number only, no currency symbols or commas. Use the stated per-unit price.
-  If a tiered price ladder is given, use the price at the SMALLEST quantity tier as the base price.
-- bulkQty: number, 0 unless a clear bulk-discount quantity threshold is stated
-- bulkPrice: number, 0 unless a clear bulk-discount price is stated
-- note: string, any extra useful detail (e.g. pack contents like "24 กระป๋อง/ถาด"), else ""
-
-Rules:
-- Only extract facts actually present in the text. Never invent prices or products that aren't there.
-- If the text contains no relevant product/price data, return an empty array.
-- Return ONLY a raw JSON array. No markdown code fences, no explanation, no extra text before or after.`;
-
-  try{
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: anthropicHeaders(),
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 4000,
-        system: systemPrompt,
-        messages: [{role: "user", content: input}]
-      })
-    });
-    if(!response.ok){
-      const errBody = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errBody.slice(0,200)}`);
-    }
-    const data = await response.json();
-    const textBlocks = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
-    const cleaned = textBlocks.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(cleaned);
-
-    if(!Array.isArray(parsed) || parsed.length === 0){
-      statusEl.style.color = 'var(--red)';
-      statusEl.textContent = 'AI ไม่พบข้อมูลสินค้าในข้อความนี้ ลองวางข้อความอื่นดูครับ';
-      btn.disabled = false;
-      btn.textContent = '✨ ให้ AI แกะข้อมูล';
-      return;
-    }
-
-    aiFillCandidates = parsed.map(item => ({
-      name: item.name || '',
-      brand: item.brand || '',
-      cat: ['liquor','beer','mixer'].includes(item.cat) ? item.cat : 'mixer',
-      supplier: ['singha','coke','liquor'].includes(item.supplier) ? item.supplier : 'singha',
-      unit: item.unit || 'ลัง',
-      price: Number(item.price) || 0,
-      bulkQty: Number(item.bulkQty) || 0,
-      bulkPrice: Number(item.bulkPrice) || 0,
-      note: item.note || '',
-      include: true
-    }));
-
-    statusEl.textContent = '';
-    statusEl.style.display = 'none';
-    btn.disabled = false;
-    btn.textContent = '✨ ให้ AI แกะข้อมูล';
-    openAiReview();
-  }catch(e){
-    statusEl.style.color = 'var(--red)';
-    statusEl.textContent = getApiKey()
-      ? 'เกิดข้อผิดพลาดตอนแกะข้อมูล (' + e.message + ') เช็คอินเทอร์เน็ตหรือ API key แล้วลองใหม่'
-      : 'ยังไม่ได้ตั้งค่า API key ครับ ไปที่แท็บ "ค้นหา" กดปุ่ม "แก้ไข" ที่กล่อง 🔑 แล้วใส่ key ก่อนใช้งานฟีเจอร์นี้';
-    btn.disabled = false;
-    btn.textContent = '✨ ให้ AI แกะข้อมูล';
-  }
-}
-
-function openAiReview(){
-  renderAiReviewList();
-  document.getElementById('ai-review-overlay').classList.add('show');
-}
-
-function closeAiReview(){
-  document.getElementById('ai-review-overlay').classList.remove('show');
-}
-
-function renderAiReviewList(){
-  const el = document.getElementById('ai-review-list');
-  el.innerHTML = aiFillCandidates.map((item, i) => `
-    <div class="ai-review-row">
-      <div class="top">
-        <input type="checkbox" ${item.include ? 'checked' : ''} onchange="aiFillCandidates[${i}].include=this.checked">
-        <input type="text" value="${escapeHtml(item.name)}" style="flex:1;" onchange="aiFillCandidates[${i}].name=this.value">
-      </div>
-      <div class="grid">
-        <input type="text" value="${escapeHtml(item.brand)}" placeholder="ยี่ห้อ" onchange="aiFillCandidates[${i}].brand=this.value">
-        <input type="text" value="${escapeHtml(item.unit)}" placeholder="หน่วย" onchange="aiFillCandidates[${i}].unit=this.value">
-        <select onchange="aiFillCandidates[${i}].cat=this.value">
-          <option value="beer" ${item.cat==='beer'?'selected':''}>เบียร์</option>
-          <option value="liquor" ${item.cat==='liquor'?'selected':''}>เหล้า</option>
-          <option value="mixer" ${item.cat==='mixer'?'selected':''}>น้ำ/โซดา/มิกเซอร์</option>
-        </select>
-        <select onchange="aiFillCandidates[${i}].supplier=this.value">
-          <option value="singha" ${item.supplier==='singha'?'selected':''}>สิงห์</option>
-          <option value="coke" ${item.supplier==='coke'?'selected':''}>โค้ก</option>
-          <option value="liquor" ${item.supplier==='liquor'?'selected':''}>เหล้า</option>
-        </select>
-        <input type="number" value="${item.price}" placeholder="ราคา" onchange="aiFillCandidates[${i}].price=Number(this.value)||0">
-      </div>
-    </div>
-  `).join('');
-}
-
-async function confirmAiFillItems(){
-  const toAdd = aiFillCandidates.filter(item => item.include && item.name.trim());
-  toAdd.forEach(item => {
-    state.menu.push({
-      id: uid(), name: item.name.trim(), brand: item.brand.trim(), cat: item.cat,
-      supplier: item.supplier, unit: item.unit.trim() || 'ลัง', price: item.price,
-      bulkQty: item.bulkQty, bulkPrice: item.bulkPrice, note: item.note
-    });
-  });
-  await saveState();
-  renderMenuManageList();
-  renderOrder();
-  aiFillCandidates = [];
-  document.getElementById('ai-fill-input').value = '';
-  closeAiReview();
-}
-
 
 function addMenuItem(){
   const name = document.getElementById('m-name').value.trim();
@@ -2066,7 +1597,7 @@ function buildOrderSlipDom(orderEntries){
       <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; color:#FFFFFF;">ยอดรวมทั้งหมด</span>
       <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; color:#E8B94A;"><span style="margin-right:2px;">฿</span>${grandTotal.toLocaleString()}</span>
     </div>
-    <div style="text-align:center; font-size:10px; color:rgba(255,255,255,0.4); margin-top:18px;">D-VIBE • ใบสั่งซื้อที่สร้างจากแอป (v26)</div>
+    <div style="text-align:center; font-size:10px; color:rgba(255,255,255,0.4); margin-top:18px;">D-VIBE • ใบสั่งซื้อที่สร้างจากแอป (v21)</div>
   `;
   document.body.appendChild(wrap);
   return wrap;
@@ -2148,6 +1679,817 @@ function closeSlipPreview(){
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+
+
+/* ========================================================================
+   D-VIBE ASSISTANT v21
+   - Natural-language fuzzy search across artists, auditions, dated bookings,
+     weekly schedules, drinks and current purchase quantities
+   - Thai speech recognition + speech synthesis using browser capabilities
+   - Full local CRUD commands with one-step undo
+   - Optional secure backend bridge (API keys must never be placed in this file)
+   ======================================================================== */
+const THAI_MONTHS = {
+  'มกราคม':1,'มกรา':1,'ม.ค':1,'มค':1,
+  'กุมภาพันธ์':2,'กุมภา':2,'ก.พ':2,'กพ':2,
+  'มีนาคม':3,'มีนา':3,'มี.ค':3,'มีค':3,
+  'เมษายน':4,'เมษา':4,'เม.ย':4,'เมย':4,
+  'พฤษภาคม':5,'พฤษภา':5,'พ.ค':5,'พค':5,
+  'มิถุนายน':6,'มิถุนา':6,'มิ.ย':6,'มิย':6,
+  'กรกฎาคม':7,'กรกฎา':7,'ก.ค':7,'กค':7,
+  'สิงหาคม':8,'สิงหา':8,'ส.ค':8,'สค':8,
+  'กันยายน':9,'กันยา':9,'ก.ย':9,'กย':9,
+  'ตุลาคม':10,'ตุลา':10,'ต.ค':10,'ตค':10,
+  'พฤศจิกายน':11,'พฤศจิกา':11,'พ.ย':11,'พย':11,
+  'ธันวาคม':12,'ธันวา':12,'ธ.ค':12,'ธค':12
+};
+const DAY_ALIASES = {
+  mon:['จันทร์','วันจันทร์','จ.','mon','monday'],
+  tue:['อังคาร','วันอังคาร','อ.','tue','tuesday'],
+  wed:['พุธ','วันพุธ','พ.','wed','wednesday'],
+  thu:['พฤหัสบดี','พฤหัส','วันพฤหัสบดี','พฤ.','thu','thursday'],
+  fri:['ศุกร์','วันศุกร์','ศ.','fri','friday'],
+  sat:['เสาร์','วันเสาร์','ส.','sat','saturday'],
+  sun:['อาทิตย์','วันอาทิตย์','อา.','sun','sunday']
+};
+const THAI_DIGITS = {'๐':'0','๑':'1','๒':'2','๓':'3','๔':'4','๕':'5','๖':'6','๗':'7','๘':'8','๙':'9'};
+let voiceRecognition = null;
+let voiceListening = false;
+let undoSnapshot = null;
+let undoLabel = '';
+let assistantBusy = false;
+
+function toArabicDigits(value){
+  return String(value ?? '').replace(/[๐-๙]/g, d => THAI_DIGITS[d] || d);
+}
+function normalizeText(value){
+  return toArabicDigits(value).toLowerCase().normalize('NFKC')
+    .replace(/ดี\s*เจ|ดิเจ|dj/g, ' dj ')
+    .replace(/นักร้องเดี่ยว/g, ' นักร้อง ')
+    .replace(/มิกซ์เซอร์|มิกเซอร/g, ' มิกเซอร์ ')
+    .replace(/[^a-z0-9\u0E00-\u0E7F:./\-]+/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+function compactText(value){ return normalizeText(value).replace(/\s+/g,''); }
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+function pad2(n){ return String(n).padStart(2,'0'); }
+function localISO(date){ return `${date.getFullYear()}-${pad2(date.getMonth()+1)}-${pad2(date.getDate())}`; }
+function dateFromISO(iso){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(iso||''))) return null;
+  const [y,m,d] = iso.split('-').map(Number);
+  const dt = new Date(y,m-1,d,12,0,0);
+  return Number.isNaN(dt.getTime()) ? null : dt;
+}
+function formatThaiDate(iso, short=false){
+  const d = dateFromISO(iso);
+  if(!d) return '';
+  return d.toLocaleDateString('th-TH', short
+    ? {day:'numeric',month:'short',year:'2-digit'}
+    : {weekday:'short',day:'numeric',month:'long',year:'numeric'});
+}
+function parseYear(raw, fallback){
+  if(!raw) return fallback;
+  let y = parseInt(toArabicDigits(raw),10);
+  if(y > 2400) y -= 543;
+  else if(y < 100) y += 2000;
+  return y;
+}
+function parseThaiDate(input, baseDate=new Date()){
+  const raw = toArabicDigits(input).toLowerCase();
+  const today = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate(),12);
+  if(/วันนี้|คืนนี้/.test(raw)) return localISO(today);
+  if(/พรุ่งนี้/.test(raw)){ today.setDate(today.getDate()+1); return localISO(today); }
+  if(/มะรืน/.test(raw)){ today.setDate(today.getDate()+2); return localISO(today); }
+  const iso = raw.match(/\b(20\d{2}|25\d{2})-(\d{1,2})-(\d{1,2})\b/);
+  if(iso){
+    const y = parseYear(iso[1],today.getFullYear()), m=+iso[2], d=+iso[3];
+    if(m>=1&&m<=12&&d>=1&&d<=31) return `${y}-${pad2(m)}-${pad2(d)}`;
+  }
+  const slash = raw.match(/(?:วันที่\s*)?(\d{1,2})[\/\-.](\d{1,2})(?:[\/\-.](\d{2,4}))?/);
+  if(slash){
+    const d=+slash[1], m=+slash[2], y=parseYear(slash[3],today.getFullYear());
+    if(m>=1&&m<=12&&d>=1&&d<=31) return `${y}-${pad2(m)}-${pad2(d)}`;
+  }
+  const monthKeys = Object.keys(THAI_MONTHS).sort((a,b)=>b.length-a.length);
+  for(const key of monthKeys){
+    const idx = raw.indexOf(key);
+    if(idx < 0) continue;
+    const before = raw.slice(Math.max(0,idx-18),idx);
+    const after = raw.slice(idx+key.length,idx+key.length+12);
+    const dm = before.match(/(\d{1,2})\s*$/);
+    if(!dm) continue;
+    const ym = after.match(/^\s*(\d{2,4})?/);
+    const d=+dm[1], m=THAI_MONTHS[key], y=parseYear(ym && ym[1],today.getFullYear());
+    if(d>=1&&d<=31) return `${y}-${pad2(m)}-${pad2(d)}`;
+  }
+  const dayOnly = raw.match(/วันที่\s*(\d{1,2})(?!\s*[\/\-.])/);
+  if(dayOnly){
+    return `${today.getFullYear()}-${pad2(today.getMonth()+1)}-${pad2(+dayOnly[1])}`;
+  }
+  return '';
+}
+function parseDayKey(input){
+  const n = normalizeText(input);
+  for(const [key, aliases] of Object.entries(DAY_ALIASES)){
+    if(aliases.some(a => n.includes(normalizeText(a)))) return key;
+  }
+  const iso = parseThaiDate(input);
+  if(iso) return dayKeyFromISO(iso);
+  return '';
+}
+function dayKeyFromISO(iso){
+  const d = dateFromISO(iso); if(!d) return '';
+  return ['sun','mon','tue','wed','thu','fri','sat'][d.getDay()];
+}
+function nextISOForDay(dayKey){
+  const target = ['sun','mon','tue','wed','thu','fri','sat'].indexOf(dayKey);
+  const d = new Date(); d.setHours(12,0,0,0);
+  let diff = (target-d.getDay()+7)%7;
+  if(diff===0) diff=7;
+  d.setDate(d.getDate()+diff);
+  return localISO(d);
+}
+function extractTimes(input){
+  const raw = toArabicDigits(input);
+  const out=[];
+  const re=/(?:เวลา|ตอน|ตั้งแต่|ถึง|–|-)?\s*([01]?\d|2[0-3])[:.]([0-5]\d)\s*(?:น\.?|นาฬิกา)?/g;
+  let m; while((m=re.exec(raw))){
+    const t=`${pad2(+m[1])}:${m[2]}`; if(!out.includes(t)) out.push(t);
+  }
+  const hourOnly=raw.match(/(?:เวลา|ตอน)\s*(\d{1,2})\s*(?:โมง|ทุ่ม|นาฬิกา)/);
+  if(out.length===0 && hourOnly){
+    let h=+hourOnly[1];
+    if(/ทุ่ม/.test(hourOnly[0])) h = h===12 ? 19 : h+18;
+    out.push(`${pad2(clamp(h,0,23))}:00`);
+  }
+  return out;
+}
+function addMinutesToTime(time, minutes){
+  const [h,m]=String(time||'20:30').split(':').map(Number);
+  const total=(h*60+m+minutes)%(24*60);
+  return `${pad2(Math.floor(total/60))}:${pad2(total%60)}`;
+}
+function levenshtein(a,b){
+  if(a===b) return 0; if(!a.length) return b.length; if(!b.length) return a.length;
+  const v0=Array.from({length:b.length+1},(_,i)=>i), v1=new Array(b.length+1);
+  for(let i=0;i<a.length;i++){
+    v1[0]=i+1;
+    for(let j=0;j<b.length;j++) v1[j+1]=Math.min(v1[j]+1,v0[j+1]+1,v0[j]+(a[i]===b[j]?0:1));
+    for(let j=0;j<=b.length;j++) v0[j]=v1[j];
+  }
+  return v1[b.length];
+}
+function fuzzyScore(query,target){
+  const q=compactText(query), t=compactText(target);
+  if(!q||!t) return 0;
+  if(t===q) return 1;
+  if(t.includes(q)) return Math.min(.98,.82+q.length/Math.max(t.length,1)*.15);
+  if(q.includes(t)) return Math.min(.94,.76+t.length/Math.max(q.length,1)*.15);
+  const qTokens=normalizeText(query).split(' ').filter(x=>x.length>1);
+  const tNorm=normalizeText(target);
+  const tokenHits=qTokens.filter(tok=>tNorm.includes(tok)).length;
+  const tokenScore=qTokens.length ? tokenHits/qTokens.length : 0;
+  const dist=levenshtein(q,t), sim=1-dist/Math.max(q.length,t.length);
+  return Math.max(sim*.72, tokenScore*.84);
+}
+function bestMatch(items, query, getText=x=>x.name, threshold=.28){
+  let best=null, score=0;
+  items.forEach(item=>{ const s=fuzzyScore(query,getText(item)); if(s>score){score=s;best=item;} });
+  return score>=threshold ? {item:best,score} : null;
+}
+function stripQuotes(s){ return String(s||'').trim().replace(/^["'“”]+|["'“”]+$/g,'').trim(); }
+function inferArtistType(text){
+  const n=normalizeText(text);
+  if(/\bdj\b/.test(n)) return 'dj';
+  if(n.includes('นักร้อง')) return 'singer';
+  return 'band';
+}
+function statusFromText(text){
+  const n=normalizeText(text);
+  if(n.includes('ไม่ผ่าน')||n.includes('ตก')) return 'fail';
+  if(n.includes('รอออดิชั่น')||n.includes('รอ')) return 'pending';
+  if(n.includes('ผ่าน')) return 'pass';
+  return '';
+}
+function categoryFromText(text){
+  const n=normalizeText(text);
+  if(n.includes('เบียร์')) return 'beer';
+  if(n.includes('เหล้า')||n.includes('วิสกี้')||n.includes('วอดก้า')||n.includes('โซจู')) return 'liquor';
+  return 'mixer';
+}
+function supplierFromText(text,cat){
+  const n=normalizeText(text);
+  if(n.includes('โค้ก')||n.includes('coke')) return 'coke';
+  if(n.includes('ร้านเหล้า')||cat==='liquor') return 'liquor';
+  return 'singha';
+}
+function artistDateISO(a){
+  if(a.auditionDateISO) return a.auditionDateISO;
+  if(/^\d{4}-\d{2}-\d{2}$/.test(String(a.auditionDate||''))) return a.auditionDate;
+  if(/^\d{1,2}$/.test(String(a.auditionDate||''))){
+    const now=new Date(); return `${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(+a.auditionDate)}`;
+  }
+  return '';
+}
+function migrateArtistDates(){
+  (state.artists||[]).forEach(a=>{
+    if(!a.auditionDateISO){
+      const iso=artistDateISO(a); if(iso) a.auditionDateISO=iso;
+    }
+  });
+}
+function snapshotData(label){
+  undoSnapshot=JSON.stringify({
+    artists:state.artists, bookings:state.bookings, schedule:state.schedule,
+    breakTimes:state.breakTimes, menu:state.menu, order:state.order
+  });
+  undoLabel=label||'คำสั่งล่าสุด';
+}
+function undoLastAssistantAction(){
+  if(!undoSnapshot){ assistantRespond('ยังไม่มีรายการที่ย้อนกลับได้ครับ'); return; }
+  try{
+    const prev=JSON.parse(undoSnapshot);
+    Object.assign(state,prev);
+    undoSnapshot=null;
+    saveState(); renderAll();
+    assistantRespond(`ย้อนกลับ “${undoLabel}” เรียบร้อยแล้วครับ`);
+  }catch(e){ assistantRespond('ย้อนกลับไม่สำเร็จครับ'); }
+}
+
+/* ---------- dated bookings ---------- */
+function renderBookingArtistOptions(){
+  const select=document.getElementById('b-artist'); if(!select) return;
+  const selected=select.value;
+  const items=[...state.artists].sort((a,b)=>a.name.localeCompare(b.name,'th'));
+  select.innerHTML=items.length ? items.map(a=>`<option value="${a.id}">${escapeHtml(a.name)} • ${TYPE_LABEL[a.type]}</option>`).join('') : '<option value="">ยังไม่มีรายชื่อ</option>';
+  if(items.some(a=>a.id===selected)) select.value=selected;
+  const dateEl=document.getElementById('b-date');
+  if(dateEl && !dateEl.value) dateEl.value=localISO(new Date());
+}
+function addBooking(){
+  const artistId=document.getElementById('b-artist').value;
+  const date=document.getElementById('b-date').value;
+  const start=document.getElementById('b-start').value||'20:30';
+  const end=document.getElementById('b-end').value||addMinutesToTime(start,45);
+  const note=document.getElementById('b-note').value.trim();
+  if(!artistId||!date){ alert('กรุณาเลือกทีมงานและวันที่'); return; }
+  snapshotData('เพิ่มคิวงาน');
+  state.bookings.push({id:uid(),artistId,date,start,end,note,status:'confirmed'});
+  document.getElementById('b-note').value='';
+  saveState(); renderBookings();
+}
+function deleteBooking(id){
+  const b=state.bookings.find(x=>x.id===id); if(!b) return;
+  snapshotData('ลบคิวงาน');
+  state.bookings=state.bookings.filter(x=>x.id!==id);
+  saveState(); renderBookings();
+}
+function renderBookings(){
+  renderBookingArtistOptions();
+  const el=document.getElementById('booking-list'); if(!el) return;
+  if(!state.bookings.length){ el.innerHTML='<div class="empty">ยังไม่มีคิวงานตามวันที่ เพิ่มจากฟอร์มหรือพูดคำสั่งได้เลย</div>'; return; }
+  const sorted=[...state.bookings].sort((a,b)=>`${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
+  el.innerHTML=sorted.map(b=>{
+    const a=artistById(b.artistId);
+    return `<div class="booking-row" data-booking-id="${b.id}">
+      <div class="booking-date">${escapeHtml(formatThaiDate(b.date,true))}<br>${escapeHtml(b.start)}–${escapeHtml(b.end)}</div>
+      <div class="booking-main"><strong>${escapeHtml(a?a.name:'ไม่พบรายชื่อ')}</strong>
+        <div class="meta">${a?TYPE_LABEL[a.type]:''}${b.note?' • '+escapeHtml(b.note):''}</div>
+      </div>
+      <button class="icon-btn" onclick="deleteBooking('${b.id}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- overrides: artist date + safe delete ---------- */
+function addArtist(){
+  const name=document.getElementById('a-name').value.trim();
+  if(!name){
+    showArtistAddFeedback('กรุณาใส่ชื่อวง นักร้อง หรือดีเจก่อนครับ', true);
+    document.getElementById('a-name').focus();
+    return;
+  }
+  snapshotData('เพิ่มทีมงาน');
+  const type=document.getElementById('a-type').value;
+  const score=parseInt(document.getElementById('a-score').value)||0;
+  const status=document.getElementById('a-status').value;
+  const auditionDateISO=document.getElementById('a-date').value;
+  const auditionTime=document.getElementById('a-time').value;
+  const note=document.getElementById('a-note').value.trim();
+  const id=uid();
+  state.artists.push({
+    id,name,type,score,status,auditionDateISO,
+    auditionDate:auditionDateISO?String(+auditionDateISO.slice(-2)):'',
+    auditionTime,note,createdAt:Date.now()
+  });
+  document.getElementById('a-name').value='';
+  document.getElementById('a-score').value=5;
+  document.getElementById('a-date').value='';
+  document.getElementById('a-note').value='';
+  saveState();
+  renderArtists(); renderDays(); renderBookings();
+  showArtistAddFeedback(`เพิ่ม ${name} เป็น${TYPE_LABEL[type]}แล้วครับ รายการใหม่อยู่บนสุด หากต้องการให้ขึ้นตารางคิว ให้กดปุ่ม 📅 ด้านขวาของชื่อ`);
+  requestAnimationFrame(()=>{
+    const row=document.querySelector(`[data-artist-id="${CSS.escape(id)}"]`);
+    if(row){ row.classList.add('flash-target'); row.scrollIntoView({behavior:'smooth',block:'center'}); }
+  });
+}
+function showArtistAddFeedback(message,isError=false){
+  const box=document.getElementById('artist-add-feedback'); if(!box) return;
+  box.textContent=message;
+  box.style.display='block';
+  box.style.color=isError?'var(--red)':'var(--gold)';
+  box.style.borderColor=isError?'rgba(196,18,48,.45)':'rgba(232,185,74,.30)';
+  box.style.background=isError?'rgba(196,18,48,.10)':'rgba(232,185,74,.10)';
+}
+function openScheduleForArtist(id){
+  const navButton=document.querySelector('nav.bottom button[data-tab="tab-schedule"]');
+  switchTab('tab-schedule',navButton);
+  renderBookingArtistOptions();
+  const select=document.getElementById('b-artist');
+  if(select){ select.value=id; }
+  const dateInput=document.getElementById('b-date');
+  if(dateInput){ dateInput.focus(); dateInput.scrollIntoView({behavior:'smooth',block:'center'}); }
+}
+function deleteArtist(id){
+  const a=artistById(id); if(!a) return;
+  snapshotData('ลบทีมงาน '+a.name);
+  state.artists=state.artists.filter(x=>x.id!==id);
+  state.bookings=state.bookings.filter(x=>x.artistId!==id);
+  DAYS.forEach(d=>BREAKS.forEach(b=>{ state.schedule[d.key][b.key]=state.schedule[d.key][b.key].filter(x=>x!==id); }));
+  saveState(); renderArtists(); renderDays(); renderBookings();
+}
+function renderArtists(){
+  const list=document.getElementById('artist-list'); if(!list) return;
+  if(state.artists.length===0){ list.innerHTML='<div class="empty">ยังไม่มีรายชื่อ เพิ่มวง/นักร้อง/ดีเจด้านบนได้เลย</div>'; return; }
+  const sorted=[...state.artists].sort((a,b)=>{
+    const ca=Number(a.createdAt)||0, cb=Number(b.createdAt)||0;
+    if(ca!==cb) return cb-ca; // รายการที่เพิ่งเพิ่มต้องมองเห็นทันทีด้านบน
+    const rawDa=artistDateISO(a), rawDb=artistDateISO(b);
+    if(!rawDa && rawDb) return -1; // รายการเก่าที่ผู้ใช้เพิ่มไว้แต่ไม่ได้ใส่วัน ต้องแสดงด้านบน
+    if(rawDa && !rawDb) return 1;
+    const da=rawDa||'9999-99-99', db=rawDb||'9999-99-99';
+    if(da!==db) return da.localeCompare(db);
+    const ta=a.auditionTime||'99:99', tb=b.auditionTime||'99:99';
+    if(ta!==tb) return ta.localeCompare(tb);
+    return b.score-a.score;
+  });
+  list.innerHTML=sorted.map(a=>{
+    const iso=artistDateISO(a);
+    const auditionLine=iso ? `${formatThaiDate(iso,true)}${a.auditionTime?' เวลา '+a.auditionTime+' น.':''}` : '';
+    return `<div class="artist-row" data-artist-id="${a.id}">
+      <div class="score-badge">${a.score}</div>
+      <div class="artist-info"><div class="name">${escapeHtml(a.name)}</div><div class="meta">
+        <span class="type-pill">${TYPE_LABEL[a.type]}</span>${escapeHtml(auditionLine)}
+        ${a.note?'<div style="margin-top:2px;color:var(--muted);">'+escapeHtml(a.note)+'</div>':''}
+      </div></div>
+      <span class="status-pill status-${a.status}" onclick="cycleStatus('${a.id}')" style="cursor:pointer;">${STATUS_LABEL[a.status]}</span>
+      <button class="icon-btn" onclick="deleteArtist('${a.id}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- search index ---------- */
+function buildSearchIndex(){
+  const docs=[];
+  state.artists.forEach(a=>{
+    const iso=artistDateISO(a);
+    docs.push({kind:'artist',id:a.id,title:a.name,
+      meta:`${TYPE_LABEL[a.type]} • ${STATUS_LABEL[a.status]} • คะแนน ${a.score}${iso?' • ออดิชั่น '+formatThaiDate(iso,true):''}${a.auditionTime?' '+a.auditionTime:''}${a.note?' • '+a.note:''}`,
+      text:`${a.name} ${TYPE_LABEL[a.type]} ${STATUS_LABEL[a.status]} คะแนน ${a.score} ${iso} ${iso?formatThaiDate(iso):''} ${a.auditionTime||''} ${a.note||''}`,
+      date:iso,type:a.type,status:a.status,tab:'tab-artists'});
+  });
+  state.bookings.forEach(b=>{
+    const a=artistById(b.artistId); if(!a) return;
+    docs.push({kind:'booking',id:b.id,title:`คิว ${a.name}`,
+      meta:`${formatThaiDate(b.date)} • ${b.start}–${b.end}${b.note?' • '+b.note:''}`,
+      text:`คิวงาน ${a.name} ${TYPE_LABEL[a.type]} ${b.date} ${formatThaiDate(b.date)} ${b.start} ${b.end} ${b.note||''}`,
+      date:b.date,type:a.type,day:dayKeyFromISO(b.date),tab:'tab-schedule'});
+  });
+  DAYS.forEach(d=>BREAKS.forEach(br=>{
+    (state.schedule[d.key][br.key]||[]).forEach(id=>{
+      const a=artistById(id); if(!a) return;
+      const t=state.breakTimes[br.key]||{};
+      docs.push({kind:'weekly',id:`${d.key}|${br.key}|${id}`,title:`${d.label} • ${a.name}`,
+        meta:`${br.label} • ${t.start||'--:--'}–${t.end||'--:--'}`,
+        text:`คิว ตาราง วัน${d.label} ${a.name} ${TYPE_LABEL[a.type]} ${br.label} ${t.start||''} ${t.end||''}`,
+        day:d.key,type:a.type,tab:'tab-schedule'});
+    });
+  }));
+  state.menu.forEach(m=>{
+    const qty=state.order[m.id]||0;
+    docs.push({kind:'drink',id:m.id,title:m.name+(m.brand?` (${m.brand})`:''),
+      meta:`${CAT_LABEL[m.cat]} • ฿${Number(m.price||0).toLocaleString()}/${m.unit||'หน่วย'}${qty?` • สั่งอยู่ ${qty} ${m.unit||'หน่วย'}`:''}${m.note?' • '+m.note:''}`,
+      text:`เครื่องดื่ม สินค้า ${m.name} ${m.brand||''} ${CAT_LABEL[m.cat]} ${m.unit||''} ราคา ${m.price||0} ${m.note||''} ${supplierGroupOf(m).label}`,
+      cat:m.cat,tab:'tab-drinks'});
+  });
+  return docs;
+}
+function searchEverything(query){
+  const n=normalizeText(query);
+  const iso=parseThaiDate(query);
+  const day=parseDayKey(query);
+  const type=/\bdj\b/.test(n)?'dj':n.includes('นักร้อง')?'singer':n.includes('วง')?'band':'';
+  const status=statusFromText(query);
+  const category=n.includes('เบียร์')?'beer':n.includes('เหล้า')?'liquor':(n.includes('มิกเซอร์')||n.includes('โซดา')||n.includes('น้ำ'))?'mixer':'';
+  const cleaned=n.replace(/^(หา|ค้นหา|ค้น|ดู|แสดง|เช็ค|มี|ขอ)\s*/,'').trim() || n;
+  const docs=buildSearchIndex();
+  const results=[];
+  docs.forEach(doc=>{
+    if(type && doc.type!==type) return;
+    if(status && doc.status!==status) return;
+    if(category && doc.cat!==category) return;
+    let score=fuzzyScore(cleaned,doc.text+' '+doc.title);
+    if(iso){
+      if(doc.date===iso) score+=.75;
+      else if(doc.kind==='weekly' && doc.day===dayKeyFromISO(iso)) score+=.43;
+      else if(doc.date) score-=.28;
+    }
+    if(day && doc.day===day) score+=.42;
+    if(type && doc.type===type) score+=.34;
+    if(type && doc.type && doc.type!==type) score-=.2;
+    if(status && doc.status===status) score+=.34;
+    if(category && doc.cat===category) score+=.32;
+    if(/คิว|ตาราง|งาน/.test(n) && ['booking','weekly'].includes(doc.kind)) score+=.23;
+    if(/เครื่องดื่ม|สินค้า|สั่ง|ราคา/.test(n) && doc.kind==='drink') score+=.2;
+    if(score>.23) results.push({...doc,score});
+  });
+  return results.sort((a,b)=>b.score-a.score).slice(0,24);
+}
+function renderAssistantResults(results){
+  const el=document.getElementById('assistant-results'); if(!el) return;
+  if(!results||!results.length){ el.innerHTML='<div class="card empty">ไม่พบรายการที่ตรงหรือใกล้เคียง</div>'; return; }
+  el.innerHTML=results.map(r=>`<button class="result-card" onclick="openSearchResult('${r.kind}','${String(r.id).replace(/'/g,"\\'")}','${r.tab}')">
+    <div class="result-type">${resultKindLabel(r.kind)}</div>
+    <div class="result-title">${escapeHtml(r.title)}</div>
+    <div class="result-meta">${escapeHtml(r.meta)}</div>
+  </button>`).join('');
+}
+function resultKindLabel(kind){ return ({artist:'ทีมงาน/ออดิชั่น',booking:'คิวตามวันที่',weekly:'ตารางรายสัปดาห์',drink:'เครื่องดื่ม'})[kind]||kind; }
+function switchToTab(tab){
+  const btn=document.querySelector(`nav.bottom button[data-tab="${tab}"]`);
+  if(btn) switchTab(tab,btn);
+}
+function openSearchResult(kind,id,tab){
+  switchToTab(tab);
+  setTimeout(()=>{
+    let target=null;
+    if(kind==='artist') target=document.querySelector(`[data-artist-id="${CSS.escape(id)}"]`);
+    else if(kind==='booking') target=document.querySelector(`[data-booking-id="${CSS.escape(id)}"]`);
+    else if(kind==='drink'){
+      const m=state.menu.find(x=>x.id===id); if(m) target=[...document.querySelectorAll('.menu-item-row')].find(x=>x.textContent.includes(m.name));
+    }
+    if(target){ target.scrollIntoView({behavior:'smooth',block:'center'}); target.classList.add('flash-target'); setTimeout(()=>target.classList.remove('flash-target'),1700); }
+  },120);
+}
+
+/* ---------- assistant chat + voice ---------- */
+function assistantTime(){ return new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}); }
+function addAssistantMessage(role,text){
+  if(!state.assistant) state.assistant={speak:true,history:[],remoteEnabled:false};
+  state.assistant.history.push({role,text:String(text),time:assistantTime()});
+  state.assistant.history=state.assistant.history.slice(-30);
+  saveState(); renderAssistantLog();
+}
+function renderAssistantLog(){
+  const el=document.getElementById('assistant-log'); if(!el||!state) return;
+  if(!state.assistant.history.length){
+    state.assistant.history=[{role:'assistant',text:'สวัสดีครับ พูดหรือพิมพ์ได้เลย เช่น “หาดีเจที่รอออดิชั่น” หรือ “เพิ่มคิววงฮานามิ วันที่ 7 สิงหาคม 2569 เวลา 20:30”',time:assistantTime()}];
+  }
+  el.innerHTML=state.assistant.history.map(m=>`<div class="chat-msg ${m.role==='user'?'user':'assistant'}">${escapeHtml(m.text)}<span class="stamp">${escapeHtml(m.time||'')}</span></div>`).join('');
+  requestAnimationFrame(()=>{el.scrollTop=el.scrollHeight;});
+}
+function assistantRespond(text,results=null,shouldSpeak=true){
+  addAssistantMessage('assistant',text);
+  if(results) renderAssistantResults(results);
+  if(shouldSpeak && state.assistant.speak) speakThai(text);
+}
+function speakThai(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const utter=new SpeechSynthesisUtterance(String(text).replace(/[•✦🎙️📅🍺🎤↶]/g,' '));
+  utter.lang='th-TH'; utter.rate=.98; utter.pitch=1;
+  const voices=speechSynthesis.getVoices();
+  const th=voices.find(v=>/^th/i.test(v.lang)); if(th) utter.voice=th;
+  speechSynthesis.speak(utter);
+}
+function toggleAssistantSpeech(checked){ state.assistant.speak=!!checked; saveState(); }
+function useCommandExample(text){
+  const input=document.getElementById('assistant-input'); input.value=text; input.focus();
+}
+function setListeningUi(on){
+  voiceListening=on;
+  ['assistant-mic','voice-fab'].forEach(id=>{const el=document.getElementById(id); if(el) el.classList.toggle('listening',on);});
+  const status=document.getElementById('assistant-status-text'); if(status) status.textContent=on?'กำลังฟังคำสั่ง…':'พร้อมรับคำสั่งภาษาธรรมชาติ';
+}
+function ensureVoiceRecognition(){
+  if(voiceRecognition) return voiceRecognition;
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return null;
+  voiceRecognition=new SR();
+  voiceRecognition.lang='th-TH'; voiceRecognition.interimResults=true; voiceRecognition.continuous=false;
+  voiceRecognition.onstart=()=>setListeningUi(true);
+  voiceRecognition.onerror=e=>{ setListeningUi(false); if(e.error!=='aborted') assistantRespond('ไมโครโฟนรับเสียงไม่สำเร็จ กรุณาอนุญาตใช้ไมค์หรือพิมพ์คำสั่งแทนครับ',null,false); };
+  voiceRecognition.onend=()=>setListeningUi(false);
+  voiceRecognition.onresult=e=>{
+    let interim='',final='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const t=e.results[i][0].transcript;
+      if(e.results[i].isFinal) final+=t; else interim+=t;
+    }
+    const input=document.getElementById('assistant-input'); if(input) input.value=final||interim;
+    if(final.trim()) setTimeout(()=>submitAssistantCommand(final.trim()),120);
+  };
+  return voiceRecognition;
+}
+function startVoiceCommand(){
+  switchToTab('tab-assistant');
+  const rec=ensureVoiceRecognition();
+  if(!rec){ assistantRespond('เบราว์เซอร์นี้ยังไม่รองรับการถอดเสียงโดยตรง กรุณาใช้ Chrome หรือ Edge ผ่าน HTTPS หรือพิมพ์คำสั่งในช่องด้านล่างครับ',null,false); return; }
+  try{
+    if(voiceListening){ rec.stop(); return; }
+    rec.start();
+  }catch(e){ try{rec.stop();}catch(_e){} }
+}
+function bindAssistantInput(){
+  const input=document.getElementById('assistant-input'); if(!input||input.dataset.bound) return;
+  input.dataset.bound='1';
+  input.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitAssistantCommand();} });
+}
+function renderAssistantSettings(){
+  const speak=document.getElementById('speak-toggle'); if(speak) speak.checked=state.assistant.speak!==false;
+  const remote=document.getElementById('remote-toggle'); if(remote) remote.checked=!!state.assistant.remoteEnabled;
+  const endpoint=document.getElementById('ai-endpoint'); if(endpoint) endpoint.value=localStorage.getItem('dvibe-ai-endpoint')||'';
+  const label=document.getElementById('assistant-engine-label');
+  if(label) label.textContent=state.assistant.remoteEnabled&&endpoint&&endpoint.value?'Local + AI Backend':'Local Command Engine';
+  const dot=document.getElementById('assistant-status-dot');
+  if(dot) dot.classList.toggle('warn',location.protocol==='file:');
+}
+function saveAssistantEndpoint(){
+  const endpoint=document.getElementById('ai-endpoint').value.trim();
+  if(endpoint) localStorage.setItem('dvibe-ai-endpoint',endpoint); else localStorage.removeItem('dvibe-ai-endpoint');
+  renderAssistantSettings(); assistantRespond(endpoint?'บันทึกที่อยู่เซิร์ฟเวอร์ AI แล้วครับ':'ลบที่อยู่เซิร์ฟเวอร์ AI แล้วครับ',null,false);
+}
+function toggleRemoteAssistant(checked){ state.assistant.remoteEnabled=!!checked; saveState(); renderAssistantSettings(); }
+async function callRemoteAssistant(message){
+  const endpoint=localStorage.getItem('dvibe-ai-endpoint')||'';
+  if(!endpoint||!state.assistant.remoteEnabled) return null;
+  const res=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,context:buildRemoteContext()})});
+  if(!res.ok) throw new Error('AI backend HTTP '+res.status);
+  return await res.json();
+}
+function buildRemoteContext(){
+  return {
+    artists:state.artists.map(a=>({id:a.id,name:a.name,type:a.type,score:a.score,status:a.status,auditionDate:artistDateISO(a),auditionTime:a.auditionTime,note:a.note})),
+    bookings:state.bookings,
+    weeklySchedule:state.schedule,
+    breakTimes:state.breakTimes,
+    drinks:state.menu.map(m=>({...m,orderQty:state.order[m.id]||0})),
+    supportedInstruction:'Return JSON: {reply:string, normalized_command?:string}. Never return an API key.'
+  };
+}
+
+/* ---------- command parser ---------- */
+function findArtistInText(text){
+  const compact=compactText(text);
+  const direct=[...state.artists].filter(a=>compact.includes(compactText(a.name))).sort((a,b)=>compactText(b.name).length-compactText(a.name).length)[0];
+  if(direct) return {item:direct,score:1};
+  const cleaned=normalizeText(text).replace(/เพิ่ม|ลบ|แก้|เปลี่ยน|ตั้ง|จัด|ใส่|ลง|คิว|งาน|วัน|เวลา|วันที่|เบรค|คะแนน|สถานะ/g,' ');
+  return bestMatch(state.artists,cleaned,a=>`${a.name} ${TYPE_LABEL[a.type]}`,.18);
+}
+function findDrinkInText(text){
+  const compact=compactText(text);
+  const direct=[...state.menu].filter(m=>compact.includes(compactText(m.name))||(m.brand&&compact.includes(compactText(m.brand)))).sort((a,b)=>compactText(b.name).length-compactText(a.name).length)[0];
+  if(direct) return {item:direct,score:1};
+  const cleaned=normalizeText(text).replace(/เพิ่ม|ลบ|แก้|เปลี่ยน|ตั้ง|สั่ง|เอา|จำนวน|ราคา|เครื่องดื่ม|สินค้า|เมนู/g,' ');
+  return bestMatch(state.menu,cleaned,m=>`${m.name} ${m.brand||''}`,.18);
+}
+function findBookingInText(text){
+  const iso=parseThaiDate(text);
+  const artist=findArtistInText(text);
+  let candidates=[...state.bookings];
+  if(artist) candidates=candidates.filter(b=>b.artistId===artist.item.id);
+  if(iso){
+    const exact=candidates.filter(b=>b.date===iso);
+    if(exact.length) candidates=exact;
+    else if(!artist) return null;
+  }
+  if(!candidates.length) return null;
+  return {item:candidates.sort((a,b)=>`${a.date}${a.start}`.localeCompare(`${b.date}${b.start}`))[0],score:1};
+}
+function commandHelp(){
+  return 'ตัวอย่างคำสั่ง:\n• หา DJ อ๋อม / หาเบียร์ที่ใกล้คำว่า ลีโอ\n• เพิ่มวง The Toys คะแนน 8 ออดิชั่นวันที่ 5 สิงหาคม 2569 เวลา 20:00\n• เปลี่ยนสถานะวงฮานามิเป็นผ่าน\n• เพิ่มคิววงฮานามิ วันที่ 7 สิงหาคม 2569 เวลา 20:30 ถึง 21:15\n• จัดดีเจอ๋อมวันศุกร์เบรค 1\n• เปลี่ยนราคาเบียร์สิงห์เป็น 678\n• สั่งเบียร์สิงห์ 20 ลัง\n• ลบคิว… หรือพูด “ย้อนกลับ” เพื่อคืนข้อมูล';
+}
+function extractArtistAdd(text){
+  const raw=toArabicDigits(text);
+  const m=raw.match(/เพิ่ม\s*(?:รายชื่อ\s*)?(วงดนตรีสด|วง|นักร้อง(?:เดี่ยว)?|ดี\s*เจ|dj)\s*(.+?)(?=\s+(?:คะแนน|สถานะ|ออดิชั่น|วันที่|เวลา|หมายเหตุ|โน้ต)(?:\s|$)|$)/i);
+  if(!m) return null;
+  const name=stripQuotes(m[2]); if(!name) return null;
+  return {type:inferArtistType(m[1]),name};
+}
+function extractDrinkAddName(text){
+  const raw=toArabicDigits(text);
+  const m=raw.match(/เพิ่ม\s*(?:เครื่องดื่ม|สินค้า|เมนู)?\s*(.+?)(?=\s+(?:ราคา|ยี่ห้อ|หน่วย|ซัพพลายเออร์|หมายเหตุ|จำนวน)(?:\s|$)|$)/i);
+  return m?stripQuotes(m[1]):'';
+}
+function parseQuantity(text){
+  const raw=toArabicDigits(text);
+  const m=raw.match(/(\d+(?:\.\d+)?)\s*(ลัง|ถาด|แพ็ก|แพค|ขวด|กระป๋อง|หน่วย|ชุด)?/);
+  return m?{qty:parseFloat(m[1]),unit:m[2]||''}:null;
+}
+function parsePrice(text){
+  const raw=toArabicDigits(text);
+  const m=raw.match(/(?:ราคา|เป็น|เหลือ)\s*(?:ที่\s*)?(\d+(?:\.\d+)?)\s*(?:บาท)?/);
+  return m?parseFloat(m[1]):null;
+}
+function extractBreakKey(text,artist){
+  const raw=toArabicDigits(text);
+  const m=raw.match(/เบรค\s*(\d)/); const num=m?clamp(+m[1],1,3):1;
+  const isDj=(artist&&artist.type==='dj')||/ดี\s*เจ|dj/i.test(raw);
+  return isDj?`dj${clamp(num,1,2)}`:`live${clamp(num,1,3)}`;
+}
+async function submitAssistantCommand(forcedText=''){
+  if(assistantBusy) return;
+  const input=document.getElementById('assistant-input');
+  const text=String(forcedText||input.value||'').trim(); if(!text) return;
+  input.value=''; addAssistantMessage('user',text); assistantBusy=true;
+  try{
+    const local=await processLocalCommand(text);
+    if(local && local.handled){ assistantRespond(local.reply,local.results||null); return; }
+    try{
+      const remote=await callRemoteAssistant(text);
+      if(remote){
+        if(remote.normalized_command){
+          const normalized=await processLocalCommand(remote.normalized_command,true);
+          if(normalized&&normalized.handled){ assistantRespond(remote.reply||normalized.reply,normalized.results||null); return; }
+        }
+        assistantRespond(remote.reply||'AI ตอบกลับแล้ว แต่ยังไม่มีคำสั่งที่แอปนำไปแก้ข้อมูลได้ครับ'); return;
+      }
+    }catch(e){
+      assistantRespond('เชื่อมต่อ AI ออนไลน์ไม่ได้ จึงใช้ระบบค้นหาในเครื่องแทนครับ',null,false);
+    }
+    const results=searchEverything(text);
+    assistantRespond(results.length?`พบ ${results.length} รายการที่ใกล้เคียงครับ`:'ยังตีความคำสั่งนี้ไม่ได้ ลองระบุชื่อ รายการ วันที่ หรือสิ่งที่ต้องการแก้ให้ชัดขึ้นครับ',results);
+  }finally{ assistantBusy=false; }
+}
+async function processLocalCommand(text,fromRemote=false){
+  const n=normalizeText(text);
+  if(!n) return {handled:false};
+  if(/^(ย้อนกลับ|undo|ยกเลิกคำสั่งล่าสุด)/.test(n)){ undoLastAssistantAction(); return {handled:true,reply:'กำลังย้อนกลับ'}; }
+  if(/ตัวอย่าง|ช่วย|ทำอะไรได้|คำสั่ง/.test(n) && !/เพิ่ม|แก้|เปลี่ยน|ลบ|สั่ง/.test(n)) return {handled:true,reply:commandHelp()};
+  if(/ปิดเสียงตอบ|ไม่ต้องพูด|หยุดพูด/.test(n)){ state.assistant.speak=false; saveState(); renderAssistantSettings(); return {handled:true,reply:'ปิดเสียงตอบกลับแล้วครับ'}; }
+  if(/เปิดเสียงตอบ|พูดตอบ/.test(n)){ state.assistant.speak=true; saveState(); renderAssistantSettings(); return {handled:true,reply:'เปิดเสียงตอบกลับแล้วครับ'}; }
+
+  // Reset current drink order.
+  if(/รีเซ็ต.*(?:ออเดอร์|ออร์เดอร์|รายการสั่ง)|ล้าง.*(?:ออเดอร์|รายการสั่ง)/.test(n)){
+    snapshotData('รีเซ็ตออเดอร์'); state.order={}; saveState(); renderOrder();
+    return {handled:true,reply:'รีเซ็ตรายการสั่งเครื่องดื่มแล้วครับ'};
+  }
+
+  // Dated booking mutations.
+  if(/(?:ลบ|ยกเลิก).*(?:คิว|งาน)/.test(n)){
+    const hit=findBookingInText(text); if(!hit) return {handled:true,reply:'ไม่พบคิวที่ต้องการลบครับ'};
+    const b=hit.item,a=artistById(b.artistId); snapshotData('ลบคิว '+(a?a.name:''));
+    state.bookings=state.bookings.filter(x=>x.id!==b.id); saveState(); renderBookings();
+    return {handled:true,reply:`ลบคิว ${a?a.name:'รายการ'} วันที่ ${formatThaiDate(b.date,true)} แล้วครับ`};
+  }
+  if(/(?:เลื่อน|แก้|เปลี่ยน).*(?:คิว|งาน)/.test(n)){
+    const hit=findBookingInText(text); if(!hit) return {handled:true,reply:'ไม่พบคิวที่ต้องการแก้ครับ'};
+    const b=hit.item,a=artistById(b.artistId);
+    const tail=(toArabicDigits(text).split(/เป็น|ไป|ใหม่/).pop()||text);
+    const newDate=parseThaiDate(tail)||parseThaiDate(text);
+    const times=extractTimes(tail);
+    snapshotData('แก้คิว '+(a?a.name:''));
+    if(newDate) b.date=newDate;
+    if(times[0]) b.start=times[0]; if(times[1]) b.end=times[1]; else if(times[0]) b.end=addMinutesToTime(times[0],45);
+    const note=(text.match(/(?:หมายเหตุ|โน้ต)\s*(.+)$/i)||[])[1]; if(note) b.note=note.trim();
+    saveState(); renderBookings();
+    return {handled:true,reply:`แก้คิว ${a?a.name:'รายการ'} เป็น ${formatThaiDate(b.date,true)} เวลา ${b.start}–${b.end} แล้วครับ`};
+  }
+  if(/(?:เพิ่ม|ลง|สร้าง|จอง).*(?:คิว|งาน)|(?:คิว|งาน).*(?:เพิ่ม|ลง|สร้าง|จอง)/.test(n)){
+    const artist=findArtistInText(text); if(!artist) return {handled:true,reply:'ยังไม่พบชื่อวง นักร้อง หรือดีเจในคำสั่งครับ'};
+    let date=parseThaiDate(text); const day=parseDayKey(text); if(!date&&day) date=nextISOForDay(day);
+    if(!date) return {handled:true,reply:'กรุณาระบุวันที่ของคิว เช่น 7 สิงหาคม 2569 ครับ'};
+    const times=extractTimes(text),start=times[0]||'20:30',end=times[1]||addMinutesToTime(start,45);
+    const note=(text.match(/(?:หมายเหตุ|โน้ต)\s*(.+)$/i)||[])[1]||'';
+    snapshotData('เพิ่มคิว '+artist.item.name);
+    state.bookings.push({id:uid(),artistId:artist.item.id,date,start,end,note:note.trim(),status:'confirmed'});
+    saveState(); renderBookings();
+    return {handled:true,reply:`เพิ่มคิว ${artist.item.name} วันที่ ${formatThaiDate(date,true)} เวลา ${start}–${end} แล้วครับ`};
+  }
+
+  // Weekly schedule assignment/removal.
+  if(/(?:เอา|ถอด|ลบ).*(?:ออกจาก).*(?:วัน|เบรค|ตาราง)/.test(n)){
+    const artist=findArtistInText(text),day=parseDayKey(text);
+    if(!artist||!day) return {handled:true,reply:'กรุณาระบุชื่อและวันให้ครบครับ'};
+    const br=extractBreakKey(text,artist.item); snapshotData('ถอดคิวรายสัปดาห์');
+    state.schedule[day][br]=(state.schedule[day][br]||[]).filter(id=>id!==artist.item.id);
+    saveState(); renderDays();
+    return {handled:true,reply:`เอา ${artist.item.name} ออกจาก${DAYS.find(d=>d.key===day).label} ${BREAKS.find(b=>b.key===br).label} แล้วครับ`};
+  }
+  if(/(?:จัด|ใส่|ลง).*(?:วัน|เบรค|ตาราง)/.test(n)){
+    const artist=findArtistInText(text),day=parseDayKey(text);
+    if(!artist||!day) return {handled:true,reply:'กรุณาระบุชื่อทีมงานและวันให้ครบครับ'};
+    const br=extractBreakKey(text,artist.item); snapshotData('จัดคิวรายสัปดาห์');
+    const arr=state.schedule[day][br]||(state.schedule[day][br]=[]); if(!arr.includes(artist.item.id)) arr.push(artist.item.id);
+    saveState(); renderDays();
+    return {handled:true,reply:`จัด ${artist.item.name} ลงวัน${DAYS.find(d=>d.key===day).label} ${BREAKS.find(b=>b.key===br).label} แล้วครับ`};
+  }
+
+  // Existing drink quantity: handle before "add product".
+  const drinkHit=findDrinkInText(text);
+  if(drinkHit && /(?:สั่ง|ตั้งจำนวน|เอา|เพิ่มจำนวน|ลดจำนวน)/.test(n)){
+    const m=drinkHit.item;
+    const afterName=normalizeText(text).replace(normalizeText(m.name),'');
+    const q=parseQuantity(afterName)||parseQuantity(text);
+    if(!q) return {handled:true,reply:'กรุณาระบุจำนวน เช่น 20 ลังครับ'};
+    snapshotData('แก้จำนวน '+m.name);
+    const cur=state.order[m.id]||0;
+    let next=q.qty;
+    if(n.includes('เพิ่มจำนวน')) next=cur+q.qty;
+    else if(n.includes('ลดจำนวน')) next=Math.max(0,cur-q.qty);
+    if(next<=0) delete state.order[m.id]; else state.order[m.id]=next;
+    saveState(); renderOrder();
+    return {handled:true,reply:`ตั้งรายการ ${m.name} เป็น ${next} ${m.unit||q.unit||'หน่วย'} แล้วครับ`};
+  }
+
+  // Drink delete/update/add.
+  if(/(?:ลบ|เอาออก).*(?:เครื่องดื่ม|สินค้า|เมนู|เบียร์|เหล้า|โซดา|น้ำ)/.test(n)){
+    if(!drinkHit) return {handled:true,reply:'ไม่พบเครื่องดื่มที่ต้องการลบครับ'};
+    snapshotData('ลบเครื่องดื่ม '+drinkHit.item.name);
+    state.menu=state.menu.filter(x=>x.id!==drinkHit.item.id); delete state.order[drinkHit.item.id];
+    saveState(); renderMenuManageList(); renderOrder();
+    return {handled:true,reply:`ลบ ${drinkHit.item.name} ออกจากเมนูแล้วครับ`};
+  }
+  if(drinkHit && /(?:แก้|เปลี่ยน).*(?:ราคา|ชื่อ|ยี่ห้อ|หน่วย|หมายเหตุ|ซัพพลายเออร์)/.test(n)){
+    const m=drinkHit.item; snapshotData('แก้เครื่องดื่ม '+m.name); const changes=[];
+    const price=parsePrice(text); if(price!==null){m.price=price;changes.push('ราคา');}
+    const unit=(text.match(/(?:หน่วย|ต่อ)\s*(ลัง|ถาด|แพ็ก|แพค|ขวด|กระป๋อง|ชุด)/i)||[])[1]; if(unit){m.unit=unit==='แพค'?'แพ็ก':unit;changes.push('หน่วย');}
+    const brand=(text.match(/(?:ยี่ห้อ|แบรนด์)\s*(?:เป็น)?\s*(.+?)(?=\s+(?:ราคา|หน่วย|หมายเหตุ)|$)/i)||[])[1]; if(brand){m.brand=brand.trim();changes.push('ยี่ห้อ');}
+    const note=(text.match(/(?:หมายเหตุ|โน้ต)\s*(?:เป็น)?\s*(.+)$/i)||[])[1]; if(note){m.note=note.trim();changes.push('หมายเหตุ');}
+    const newName=(text.match(/เปลี่ยนชื่อ.*?เป็น\s*(.+?)(?=\s+(?:ราคา|หน่วย|หมายเหตุ)|$)/i)||[])[1]; if(newName){m.name=newName.trim();changes.push('ชื่อ');}
+    saveState(); renderMenuManageList(); renderOrder();
+    return {handled:true,reply:changes.length?`แก้${changes.join(' / ')}ของ ${m.name} แล้วครับ`:'ยังไม่พบค่าที่ต้องการแก้ครับ'};
+  }
+  if(/เพิ่ม.*(?:เบียร์|เหล้า|โซดา|น้ำ|มิกเซอร์|เครื่องดื่ม|สินค้า)/.test(n)){
+    const name=extractDrinkAddName(text); if(!name) return {handled:true,reply:'กรุณาระบุชื่อเครื่องดื่มครับ'};
+    const existing=bestMatch(state.menu,name,m=>m.name,.72); if(existing) return {handled:true,reply:`มี ${existing.item.name} อยู่แล้วครับ ใช้คำสั่งเปลี่ยนราคาหรือสั่งจำนวนได้เลย`};
+    const cat=categoryFromText(name+' '+text),supplier=supplierFromText(text,cat),price=parsePrice(text)||0;
+    const unit=(text.match(/(?:หน่วย|ต่อ)\s*(ลัง|ถาด|แพ็ก|แพค|ขวด|กระป๋อง|ชุด)/i)||[])[1]||'ลัง';
+    const brand=(text.match(/(?:ยี่ห้อ|แบรนด์)\s*(.+?)(?=\s+(?:ราคา|หน่วย|หมายเหตุ)|$)/i)||[])[1]||'';
+    snapshotData('เพิ่มเครื่องดื่ม '+name);
+    state.menu.push({id:uid(),name,brand:brand.trim(),cat,supplier,unit:unit==='แพค'?'แพ็ก':unit,price,bulkQty:0,bulkPrice:0,note:''});
+    saveState(); renderMenuManageList(); renderOrder();
+    return {handled:true,reply:`เพิ่ม ${name}${price?` ราคา ${price} บาท`:''} ลงเมนูแล้วครับ`};
+  }
+
+  // Artist delete/update/add.
+  if(/(?:ลบ|เอาออก).*(?:วง|นักร้อง|ดี\s*เจ|dj|ทีมงาน)/.test(n)){
+    const hit=findArtistInText(text); if(!hit) return {handled:true,reply:'ไม่พบรายชื่อที่ต้องการลบครับ'};
+    snapshotData('ลบทีมงาน '+hit.item.name);
+    state.artists=state.artists.filter(x=>x.id!==hit.item.id); state.bookings=state.bookings.filter(x=>x.artistId!==hit.item.id);
+    DAYS.forEach(d=>BREAKS.forEach(b=>{state.schedule[d.key][b.key]=(state.schedule[d.key][b.key]||[]).filter(id=>id!==hit.item.id);}));
+    saveState(); renderArtists(); renderDays(); renderBookings();
+    return {handled:true,reply:`ลบ ${hit.item.name} พร้อมคิวที่เกี่ยวข้องแล้วครับ`};
+  }
+  const artistAdd=extractArtistAdd(text);
+  if(artistAdd){
+    const existing=bestMatch(state.artists,artistAdd.name,a=>a.name,.78); if(existing) return {handled:true,reply:`มี ${existing.item.name} อยู่ในรายชื่อแล้วครับ`};
+    const scoreMatch=toArabicDigits(text).match(/คะแนน\s*(\d{1,2})/),score=scoreMatch?clamp(+scoreMatch[1],0,10):5;
+    const status=statusFromText(text)||'pending',date=parseThaiDate(text),times=extractTimes(text);
+    const note=(text.match(/(?:หมายเหตุ|โน้ต)\s*(.+)$/i)||[])[1]||'';
+    snapshotData('เพิ่มทีมงาน '+artistAdd.name);
+    state.artists.push({id:uid(),name:artistAdd.name,type:artistAdd.type,score,status,auditionDateISO:date,auditionDate:date?String(+date.slice(-2)):'',auditionTime:times[0]||'',note:note.trim(),createdAt:Date.now()});
+    saveState(); renderArtists(); renderDays(); renderBookings();
+    return {handled:true,reply:`เพิ่ม ${artistAdd.name} เป็น${TYPE_LABEL[artistAdd.type]} คะแนน ${score}${date?' ออดิชั่น '+formatThaiDate(date,true):''} แล้วครับ`};
+  }
+  if(/(?:แก้|เปลี่ยน|ตั้ง).*(?:คะแนน|สถานะ|ชื่อ|ออดิชั่น|เวลา|หมายเหตุ)/.test(n)){
+    const hit=findArtistInText(text); if(!hit) return {handled:true,reply:'ไม่พบรายชื่อที่ต้องการแก้ครับ'};
+    const a=hit.item,changes=[]; snapshotData('แก้ทีมงาน '+a.name);
+    const sm=toArabicDigits(text).match(/คะแนน\s*(?:เป็น|เท่ากับ)?\s*(\d{1,2})/); if(sm){a.score=clamp(+sm[1],0,10);changes.push('คะแนน');}
+    const st=statusFromText(text); if(st&&/สถานะ|ผ่าน|รอ|ตก/.test(n)){a.status=st;changes.push('สถานะ');}
+    const date=parseThaiDate(text); if(date&&/ออดิชั่น|วันที่/.test(n)){a.auditionDateISO=date;a.auditionDate=String(+date.slice(-2));changes.push('วันที่ออดิชั่น');}
+    const times=extractTimes(text); if(times[0]&&/เวลา|ออดิชั่น/.test(n)){a.auditionTime=times[0];changes.push('เวลา');}
+    const note=(text.match(/(?:หมายเหตุ|โน้ต)\s*(?:เป็น)?\s*(.+)$/i)||[])[1]; if(note){a.note=note.trim();changes.push('หมายเหตุ');}
+    const newName=(text.match(/เปลี่ยนชื่อ.*?เป็น\s*(.+?)(?=\s+(?:คะแนน|สถานะ|ออดิชั่น|วันที่|เวลา|หมายเหตุ)|$)/i)||[])[1]; if(newName){a.name=newName.trim();changes.push('ชื่อ');}
+    saveState(); renderArtists(); renderBookings(); renderDays();
+    return {handled:true,reply:changes.length?`แก้${changes.join(' / ')}ของ ${a.name} แล้วครับ`:'ยังไม่พบค่าที่ต้องการแก้ครับ'};
+  }
+
+  // Explicit or implicit search.
+  if(/^(หา|ค้นหา|ค้น|ดู|แสดง|เช็ค|มี)|คิว|ตาราง|วง|นักร้อง|\bdj\b|เครื่องดื่ม|เบียร์|เหล้า|โซดา|ราคา/.test(n)){
+    const results=searchEverything(text);
+    return {handled:true,reply:results.length?`พบ ${results.length} รายการที่ตรงหรือใกล้เคียงครับ`:'ไม่พบรายการที่ตรงหรือใกล้เคียงครับ',results};
+  }
+  return {handled:false};
+}
+
+/* ---------- final render override ---------- */
+function renderAll(){
+  renderArtists(); renderPreShowBlocks(); renderBreakTimeInputs(); renderBookings(); renderDays();
+  renderMenuManageList(); renderOrder(); renderAssistantLog(); renderAssistantSettings(); bindAssistantInput();
+}
+
 
 loadState();
 
